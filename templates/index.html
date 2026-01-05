@@ -16,9 +16,16 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: center;
-            color: #fff;
+            padding: 20px;
         }
 
         .container {
@@ -30,7 +37,7 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.18);
             max-width: 500px;
-            width: 90%;
+            width: 100%;
         }
 
         h1 {
@@ -61,14 +68,12 @@
             display: inline-block;
         }
 
-        .download-btn:hover {
+        .download-btn:hover, .download-btn:focus {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px 0 rgba(255, 255, 255, 0.4);
             background: #f0f0f0;
-        }
-
-        .download-btn:active {
-            transform: translateY(-1px);
+            outline: 3px solid #fff;
+            outline-offset: 2px;
         }
 
         .icon {
@@ -81,17 +86,152 @@
             font-size: 0.9em;
             opacity: 0.7;
         }
+
+        /* Footer Styles */
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.2s;
+        }
+
+        footer a:hover, footer a:focus {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Cookie Banner Styles */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            color: #333;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: none; /* Hidden by default, shown via JS */
+            z-index: 1000;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            #cookie-banner {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+                padding: 20px 40px;
+            }
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-accept {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-decline {
+            background: transparent;
+            border: 1px solid #999;
+            color: #555;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Accessibility improvements */
+        :focus {
+            outline: 3px solid #fff;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="icon">📥</div>
-        <h1>Kerados</h1>
-        <p>Download the Windows installer</p>
-        <a href="/download" class="download-btn">Download Kerados</a>
-        <div class="info">
-            <p>Windows 10/11 (64-bit)</p>
+    <main>
+        <div class="container">
+            <div class="icon" role="img" aria-label="Download Icon">📥</div>
+            <h1>Kerados</h1>
+            <p>Download the Windows installer</p>
+            <a href="/download" class="download-btn">Download Kerados</a>
+            <div class="info">
+                <p>Windows 10/11 (64-bit)</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <nav aria-label="Legal">
+            <a href="/legal/terms">Terms of Service</a>
+            <a href="/legal/privacy">Privacy Policy</a>
+            <a href="/legal/accessibility">Accessibility Statement</a>
+            <a href="/legal/impressum">Impressum</a>
+        </nav>
+        <p style="margin-top: 10px; opacity: 0.5;">&copy; 2026 Kerados. All rights reserved.</p>
+    </footer>
+
+    <div id="cookie-banner" role="dialog" aria-labelledby="cookie-heading">
+        <div>
+            <h3 id="cookie-heading" style="margin-bottom: 5px; color: #333;">We value your privacy</h3>
+            <p style="margin: 0; color: #666; font-size: 0.9em;">
+                We use cookies to enhance your experience. By clicking "Accept", you agree to our use of cookies.
+                <a href="/legal/privacy" style="color: #667eea; text-decoration: underline;">Read more</a>
+            </p>
+        </div>
+        <div class="cookie-buttons">
+            <button class="btn-decline" onclick="declineCookies()">Decline</button>
+            <button class="btn-accept" onclick="acceptCookies()">Accept</button>
         </div>
     </div>
+
+    <script>
+        // Check for saved preference
+        const cookieConsent = localStorage.getItem('cookieConsent');
+        const banner = document.getElementById('cookie-banner');
+
+        if (!cookieConsent) {
+            // Show banner if no choice made yet
+            banner.style.display = 'flex';
+        } else if (cookieConsent === 'accepted') {
+            enableTracking();
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            banner.style.display = 'none';
+            enableTracking();
+        }
+
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            banner.style.display = 'none';
+            // Ensure tracking remains disabled
+        }
+
+        function enableTracking() {
+            console.log("Tracking enabled");
+            // HERE IS WHERE YOU WOULD INSERT GOOGLE ANALYTICS / PIXEL CODE
+            // Example:
+            // loadScript('https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y');
+        }
+    </script>
 </body>
 </html>

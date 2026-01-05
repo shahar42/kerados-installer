@@ -27,6 +27,13 @@ def download_installer():
         mimetype='application/octet-stream'
     )
 
+@app.route('/legal/<page_name>')
+def legal(page_name):
+    """Serve legal pages"""
+    if page_name in ['terms', 'privacy', 'accessibility', 'impressum']:
+        return render_template(f'legal/{page_name}.html')
+    abort(404)
+
 @app.route('/health')
 def health():
     """Health check endpoint for Render"""
