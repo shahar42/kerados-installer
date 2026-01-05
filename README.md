@@ -12,7 +12,7 @@ app_installer_service/
 │   └── index.html                  # Landing page
 └── static/
     └── downloads/
-        └── kerados_installer.exe   # Installer file (placeholder currently)
+        └── shlookapaka_installer.exe   # Installer file (placeholder currently)
 ```
 
 ## Local Testing
@@ -58,10 +58,10 @@ mcp__render__create_web_service(
 
 When the actual installer is ready:
 
-1. Replace `static/downloads/kerados_installer.exe` with the real installer
+1. Replace `static/downloads/shlookapaka_installer.exe` with the real installer
 2. Git commit and push:
    ```bash
-   git add app_installer_service/static/downloads/kerados_installer.exe
+   git add app_installer_service/static/downloads/shlookapaka_installer.exe
    git commit -m "Add real shlookapaka installer"
    git push
    ```

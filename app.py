@@ -4,7 +4,7 @@ import os
 app = Flask(__name__)
 
 # Configuration
-INSTALLER_FILENAME = "kerados_installer.exe"
+INSTALLER_FILENAME = "shlookapaka_installer.exe"
 DOWNLOADS_DIR = os.path.join(app.root_path, 'static', 'downloads')
 
 @app.route('/')
