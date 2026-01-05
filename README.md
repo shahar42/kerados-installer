@@ -1,6 +1,6 @@
-# Kerados Installer Service
+# shlookapaka Installer Service
 
-Simple Flask web service for hosting the Kerados Windows installer.
+Simple Flask web service for hosting the shlookapaka Windows installer.
 
 ## Structure
 
@@ -62,7 +62,7 @@ When the actual installer is ready:
 2. Git commit and push:
    ```bash
    git add app_installer_service/static/downloads/kerados_installer.exe
-   git commit -m "Add real Kerados installer"
+   git commit -m "Add real shlookapaka installer"
    git push
    ```
 3. Render will auto-deploy the update

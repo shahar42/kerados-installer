@@ -14,7 +14,7 @@ def index():
 
 @app.route('/download')
 def download_installer():
-    """Serve the Kerados installer"""
+    """Serve the shlookapaka installer"""
     file_path = os.path.join(DOWNLOADS_DIR, INSTALLER_FILENAME)
 
     if not os.path.exists(file_path):
