@@ -203,8 +203,8 @@
 
         .magnifying-glass-container {
             position: relative;
-            width: 280px;
-            height: 280px;
+            width: 320px;
+            height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -213,40 +213,38 @@
         .magnifying-glass {
             width: 100%;
             height: 100%;
-            position: relative;
+            filter: drop-shadow(0 0 40px rgba(79, 70, 229, 0.3));
+            animation: float-glass 4s ease-in-out infinite;
         }
 
-        .glass-circle {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border: 12px solid;
-            border-image: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #ec4899 100%) 1;
-            border-radius: 50%;
-            top: 0;
-            left: 0;
-            animation: pulse-glow 3s ease-in-out infinite;
-        }
-
-        .glass-handle {
-            position: absolute;
-            width: 14px;
-            height: 80px;
-            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
-            border-radius: 7px;
-            bottom: -20px;
-            right: -20px;
-            transform: rotate(-45deg);
-            transform-origin: top left;
-        }
-
-        @keyframes pulse-glow {
+        @keyframes float-glass {
             0%, 100% {
-                box-shadow: 0 0 30px rgba(79, 70, 229, 0.4), inset 0 0 30px rgba(79, 70, 229, 0.1);
+                transform: translateY(0px);
+                filter: drop-shadow(0 0 40px rgba(79, 70, 229, 0.3));
             }
             50% {
-                box-shadow: 0 0 50px rgba(236, 72, 153, 0.4), inset 0 0 30px rgba(236, 72, 153, 0.1);
+                transform: translateY(-15px);
+                filter: drop-shadow(0 0 60px rgba(236, 72, 153, 0.4));
             }
+        }
+
+        .magnifying-glass circle {
+            stroke: url(#glassGradient);
+            fill: rgba(79, 70, 229, 0.05);
+            stroke-width: 16;
+        }
+
+        .magnifying-glass line {
+            stroke: url(#glassGradient);
+            stroke-width: 16;
+            stroke-linecap: round;
+        }
+
+        .magnifying-glass-content {
+            fill: none;
+            stroke: rgba(79, 70, 229, 0.6);
+            stroke-width: 2;
+            opacity: 0.4;
         }
 
         /* Problem Section */
@@ -667,10 +665,31 @@
             </div>
             <div class="hero-visual">
                 <div class="magnifying-glass-container">
-                    <div class="magnifying-glass">
-                        <div class="glass-circle"></div>
-                        <div class="glass-handle"></div>
-                    </div>
+                    <svg class="magnifying-glass" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Magnifying glass circle (lens) -->
+                        <circle cx="110" cy="110" r="90" />
+                        <!-- Handle -->
+                        <line x1="175" y1="175" x2="260" y2="260" />
+                        <!-- Visual content inside (video grid suggestion) -->
+                        <g class="magnifying-glass-content">
+                            <circle cx="70" cy="70" r="8" />
+                            <circle cx="110" cy="70" r="8" />
+                            <circle cx="150" cy="70" r="8" />
+                            <circle cx="70" cy="110" r="8" />
+                            <circle cx="110" cy="110" r="8" />
+                            <circle cx="150" cy="110" r="8" />
+                            <circle cx="70" cy="150" r="8" />
+                            <circle cx="110" cy="150" r="8" />
+                            <circle cx="150" cy="150" r="8" />
+                        </g>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -697,7 +716,7 @@
                 <h3>Search Like You Talk</h3>
                 <p>Type "bride dancing with father" or "groom reaction shot." The AI understands context.</p>
                 <div class="step-visual">
-                    <img src="/static/../images/screen_shot_of_search_bar_with_results.jpeg" alt="Kerados search interface showing results">
+                    <img src="/static/images/screen_shot_of_search_bar_with_results.jpeg" alt="Kerados search interface showing results">
                 </div>
             </div>
             <div class="step">
