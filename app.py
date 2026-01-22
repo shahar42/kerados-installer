@@ -12,6 +12,11 @@ def index():
     """Landing page with download button"""
     return render_template('index.html')
 
+@app.route('/control-panel')
+def control_panel():
+    """Magnifying glass control panel"""
+    return send_file('static/control-panel.html')
+
 @app.route('/download')
 def download_installer():
     """Serve the shlookapaka installer"""
