@@ -763,10 +763,10 @@
                                     <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
                                 </linearGradient>
                             </defs>
-                            <!-- Magnifying glass circle (lens) -->
-                            <circle cx="110" cy="110" r="90" />
                             <!-- Handle -->
                             <line id="handle-line" x1="110" y1="110" x2="260" y2="260" />
+                            <!-- Magnifying glass circle (lens) - drawn after handle so it appears on top -->
+                            <circle cx="110" cy="110" r="90" />
                         </svg>
                     </div>
 
@@ -777,9 +777,9 @@
                         <div style="margin-bottom: 20px;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
                                 <span>X Position</span>
-                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="x-value">185</span>
+                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="x-value">183</span>
                             </div>
-                            <input type="range" id="x-slider" min="50" max="250" value="185" style="width: 100%; cursor: pointer;" />
+                            <input type="range" id="x-slider" min="50" max="250" value="183" style="width: 100%; cursor: pointer;" />
                         </div>
 
                         <div style="margin-bottom: 20px;">
@@ -793,9 +793,9 @@
                         <div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
                                 <span>Angle</span>
-                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="angle-value">45°</span>
+                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="angle-value">36°</span>
                             </div>
-                            <input type="range" id="angle-slider" min="0" max="360" value="45" style="width: 100%; cursor: pointer;" />
+                            <input type="range" id="angle-slider" min="0" max="360" value="36" style="width: 100%; cursor: pointer;" />
                         </div>
                     </div>
                 </div>
