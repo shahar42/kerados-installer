@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download shlookapaka</title>
+    <title>Kerados - Find Any Video Clip in Seconds</title>
     <style>
         * {
             margin: 0;
@@ -12,102 +12,496 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+            padding: 16px 40px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4f46e5 0%, #e91e63 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: none;
+            gap: 30px;
+            list-style: none;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
             color: #fff;
         }
 
-        main {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 60px 40px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            max-width: 500px;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        p {
-            font-size: 1.2em;
-            margin-bottom: 40px;
-            opacity: 0.9;
-        }
-
-        .download-btn {
-            background: #fff;
-            color: #667eea;
+        .nav-cta {
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            color: #fff;
             border: none;
-            padding: 18px 50px;
-            font-size: 1.2em;
+            padding: 12px 28px;
+            border-radius: 8px;
             font-weight: 600;
-            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
         }
 
-        .download-btn:hover, .download-btn:focus {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px 0 rgba(255, 255, 255, 0.4);
-            background: #f0f0f0;
-            outline: 3px solid #fff;
-            outline-offset: 2px;
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
         }
 
-        .icon {
-            font-size: 4em;
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5em, 6vw, 4em);
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text h1 .highlight {
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            color: #fff;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 14px 38px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .magnifying-glass-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .magnifying-glass {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .glass-circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 12px solid;
+            border-image: linear-gradient(135deg, #4f46e5 0%, #9333ea 50%, #ec4899 100%) 1;
+            border-radius: 50%;
+            top: 0;
+            left: 0;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        .glass-handle {
+            position: absolute;
+            width: 14px;
+            height: 80px;
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            border-radius: 7px;
+            bottom: -20px;
+            right: -20px;
+            transform: rotate(-45deg);
+            transform-origin: top left;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(79, 70, 229, 0.4), inset 0 0 30px rgba(79, 70, 229, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(236, 72, 153, 0.4), inset 0 0 30px rgba(236, 72, 153, 0.1);
+            }
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 100px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .problem h2 {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .problem p {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 100px 20px;
+            background: rgba(79, 70, 229, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 80px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            font-size: 3em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 20px;
         }
 
-        .info {
-            margin-top: 30px;
-            font-size: 0.9em;
-            opacity: 0.7;
+        .step h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
         }
 
-        /* Footer Styles */
-        footer {
-            background: rgba(0, 0, 0, 0.2);
+        .step p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95em;
+        }
+
+        .step-visual {
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
             padding: 20px;
-            text-align: center;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-visual img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 4px;
+        }
+
+        .step-visual.placeholder {
+            color: rgba(255, 255, 255, 0.3);
             font-size: 0.9em;
         }
 
-        footer a {
+        /* Features Section */
+        .features {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 80px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature:hover {
+            background: rgba(79, 70, 229, 0.1);
+            border-color: rgba(79, 70, 229, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            margin: 0 auto 20px;
+        }
+
+        .feature h3 {
+            font-size: 1.2em;
+            margin-bottom: 12px;
+        }
+
+        .feature p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95em;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 20px;
+            background: rgba(79, 70, 229, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .testimonials h2 {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 80px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        .testimonial-text {
+            font-size: 1em;
             color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9em;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-size: 3em;
+            font-weight: 800;
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        .final-cta p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px 20px 30px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 20px;
+        }
+
+        .footer-section a {
+            display: block;
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
-            margin: 0 10px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
             transition: color 0.2s;
         }
 
-        footer a:hover, footer a:focus {
+        .footer-section a:hover {
             color: #fff;
-            text-decoration: underline;
         }
 
-        /* Cookie Banner Styles */
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85em;
+        }
+
+        /* Cookie Banner */
         #cookie-banner {
             position: fixed;
             bottom: 24px;
@@ -115,22 +509,16 @@
             transform: translateX(-50%) translateY(20px);
             width: 90%;
             max-width: 680px;
-            
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(15, 15, 15, 0.95);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             padding: 12px 24px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            
             display: none;
             flex-direction: column;
             align-items: center;
             gap: 16px;
-            
             opacity: 0;
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
@@ -162,16 +550,13 @@
 
         .cookie-text {
             margin: 0;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.8);
             font-size: 0.95em;
-            font-weight: 500;
         }
 
         .cookie-text a {
             color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
-            margin-left: 8px;
-            font-size: 0.9em;
             border-bottom: 1px solid transparent;
             transition: all 0.2s;
         }
@@ -188,7 +573,7 @@
 
         .btn-base {
             padding: 8px 24px;
-            border-radius: 20px;
+            border-radius: 6px;
             font-size: 0.9em;
             font-weight: 600;
             cursor: pointer;
@@ -197,16 +582,14 @@
         }
 
         .btn-accept {
-            background: rgba(255, 255, 255, 0.95);
-            color: #667eea;
+            background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+            color: #fff;
             border: none;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
         .btn-accept:hover {
-            background: #fff;
             transform: translateY(-1px);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
         }
 
         .btn-decline {
@@ -216,45 +599,211 @@
         }
 
         .btn-decline:hover {
-            border-color: rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 0.8);
             color: #fff;
-            background: rgba(255, 255, 255, 0.05);
         }
 
-        /* Accessibility improvements */
+        /* Accessibility */
         :focus {
-            outline: 3px solid #fff;
+            outline: 2px solid #4f46e5;
             outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                margin-top: 60px;
+                padding: 40px 20px;
+            }
+
+            .hero-text h1 {
+                font-size: 2em;
+            }
+
+            .problem, .how-it-works, .features, .testimonials, .final-cta {
+                padding: 60px 20px;
+            }
+
+            .problem h2, .how-it-works h2, .features h2, .testimonials h2 {
+                font-size: 1.8em;
+            }
+
+            .final-cta h2 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
-    <main>
-        <div class="container">
-            <div class="icon" role="img" aria-label="Download Icon">📥</div>
-            <h1>shlookapaka</h1>
-            <p>Download the Windows installer</p>
-            <a href="/download" class="download-btn">Download shlookapaka</a>
-            <div class="info">
-                <p>Windows 10/11 (64-bit)</p>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-left">
+            <div class="logo">Kerados</div>
+            <ul class="nav-links">
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#features">Features</a></li>
+            </ul>
+        </div>
+        <a href="/download" class="nav-cta">Get Kerados</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Find any <span class="highlight">video clip in seconds</span>. Just describe it.</h1>
+                <p>Stop scrubbing through footage. Index your entire hard drive and search like you're talking to a human—"Bride crying" or "CEO shaking hands"—and get the exact timestamp instantly.</p>
+                <div class="hero-buttons">
+                    <a href="/download" class="btn-primary">Get Kerados - $169 (One-Time)</a>
+                    <button class="btn-secondary" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">See How It Works</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="magnifying-glass-container">
+                    <div class="magnifying-glass">
+                        <div class="glass-circle"></div>
+                        <div class="glass-handle"></div>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
+    </section>
 
+    <!-- Problem Section -->
+    <section class="problem">
+        <h2>You didn't become a videographer to be a file librarian.</h2>
+        <p>You have terabytes of footage. Finding the right 5 seconds shouldn't take hours. The panic of knowing you have the shot but spending four hours scrubbing through timelines? That's the nightmare we end.</p>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps-grid">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Index Your Drive</h3>
+                <p>Select your folder. Kerados watches your footage with local AI—no cloud, no uploads.</p>
+                <div class="step-visual placeholder">Screenshot placeholder<br><em>Folder selection modal coming soon</em></div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Search Like You Talk</h3>
+                <p>Type "bride dancing with father" or "groom reaction shot." The AI understands context.</p>
+                <div class="step-visual">
+                    <img src="/static/../images/screen_shot_of_search_bar_with_results.jpeg" alt="Kerados search interface showing results">
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Export in Seconds</h3>
+                <p>Drag files directly into Premiere Pro or DaVinci. Editing faster means more clients.</p>
+                <div class="step-visual placeholder">Screenshot placeholder<br><em>Export flow coming soon</em></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <h2>Why Kerados Wins</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <h3>100% Private</h3>
+                <p>Runs locally on your GPU. Your footage never touches the cloud. You own your data.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <h3>One-Time Payment</h3>
+                <p>No monthly subscriptions. $169 once, then it's yours forever. Welcome relief from SaaS fatigue.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📁</div>
+                <h3>Format Agnostic</h3>
+                <p>MP4, MOV, MKV—whatever your camera spits out, Kerados searches it.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Fast Local Processing</h3>
+                <p>No internet needed. No waiting for cloud servers. Results in milliseconds.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <h3>AI That Gets It</h3>
+                <p>Semantic search understands intent. Find "happy moments" not just "smiling faces."</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚙️</div>
+                <h3>Works With Your Setup</h3>
+                <p>Windows-native. Plays nicely with Premiere, DaVinci, and your existing workflow.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <h2>From Videographers Like You</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial">
+                <div class="testimonial-text">"I used to spend 2 hours culling footage for a wedding highlight reel. With Kerados, I found the specific toasts and first dance in 30 seconds. I can now take on more weddings."</div>
+                <div class="testimonial-author">— Wedding Videographer (Testimonial Placeholder)</div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-text">"The nightmare of scrubbing through corporate event footage is over. Search by what I'm actually looking for, not file names. Game changer for my editing bay."</div>
+                <div class="testimonial-author">— Corporate Videographer (Testimonial Placeholder)</div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-text">"Finally, AI that doesn't require a monthly subscription and doesn't upload my footage to some server. Kerados respects my privacy and my wallet."</div>
+                <div class="testimonial-author">— Independent Filmmaker (Testimonial Placeholder)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <h2>Stop Wasting Hours. Start Creating.</h2>
+        <p>Your footage is too valuable to lose time searching. Kerados finds it faster so you can focus on editing, not filing.</p>
+        <a href="/download" class="btn-primary">Buy Kerados Now - $169 (Lifetime License)</a>
+    </section>
+
+    <!-- Footer -->
     <footer>
-        <nav aria-label="Legal">
-            <a href="/legal/terms">Terms of Service</a>
-            <a href="/legal/privacy">Privacy Policy</a>
-            <a href="/legal/accessibility">Accessibility Statement</a>
-            <a href="/legal/impressum">Impressum</a>
-        </nav>
-        <p style="margin-top: 10px; opacity: 0.5;">&copy; 2026 shlookapaka. All rights reserved.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Product</h4>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#features">Features</a>
+                <a href="/download">Download</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="/legal/terms">Terms of Service</a>
+                <a href="/legal/privacy">Privacy Policy</a>
+                <a href="/legal/accessibility">Accessibility</a>
+                <a href="/legal/impressum">Impressum</a>
+            </div>
+            <div class="footer-section">
+                <h4>About</h4>
+                <a href="#">Contact</a>
+                <a href="#">Status</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kerados. All rights reserved. No subscriptions, no cloud, no nonsense.</p>
+        </div>
     </footer>
 
+    <!-- Cookie Banner -->
     <div id="cookie-banner" role="dialog" aria-label="Cookie Consent">
         <div class="cookie-content">
             <p class="cookie-text">
-                We use cookies to keep things smooth. 
+                We use cookies to keep things smooth.
                 <a href="/legal/privacy">Read more</a>
             </p>
         </div>
@@ -265,14 +814,11 @@
     </div>
 
     <script>
-        // Check for saved preference
         const cookieConsent = localStorage.getItem('cookieConsent');
         const banner = document.getElementById('cookie-banner');
 
         if (!cookieConsent) {
-            // Show banner if no choice made yet
             banner.style.display = 'flex';
-            // Trigger reflow/delay to allow transition
             setTimeout(() => banner.classList.add('visible'), 50);
         } else if (cookieConsent === 'accepted') {
             enableTracking();
@@ -280,7 +826,6 @@
 
         function hideBanner() {
             banner.classList.remove('visible');
-            // Wait for transition to finish before hiding
             setTimeout(() => {
                 banner.style.display = 'none';
             }, 300);
@@ -299,9 +844,6 @@
 
         function enableTracking() {
             console.log("Tracking enabled");
-            // HERE IS WHERE YOU WOULD INSERT GOOGLE ANALYTICS / PIXEL CODE
-            // Example:
-            // loadScript('https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y');
         }
     </script>
 </body>
