@@ -758,9 +758,9 @@
                         <svg class="magnifying-glass" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+                                    <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
                                     <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
                                 </linearGradient>
                             </defs>
                             <!-- Magnifying glass circle (lens) -->
@@ -772,22 +772,30 @@
 
                     <!-- Control Panel -->
                     <div style="background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(79, 70, 229, 0.3); border-radius: 12px; padding: 24px; width: 280px; backdrop-filter: blur(10px); text-align: center;">
-                        <div style="font-size: 0.85em; font-weight: 700; color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Handle Position</div>
+                        <div style="font-size: 0.85em; font-weight: 700; color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Handle Control</div>
 
                         <div style="margin-bottom: 20px;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
                                 <span>X Position</span>
-                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="x-value">260</span>
+                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="x-value">185</span>
                             </div>
-                            <input type="range" id="x-slider" min="150" max="310" value="260" style="width: 100%; cursor: pointer;" />
+                            <input type="range" id="x-slider" min="50" max="250" value="185" style="width: 100%; cursor: pointer;" />
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
+                                <span>Y Position</span>
+                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="y-value">162</span>
+                            </div>
+                            <input type="range" id="y-slider" min="50" max="250" value="162" style="width: 100%; cursor: pointer;" />
                         </div>
 
                         <div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
-                                <span>Y Position</span>
-                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="y-value">260</span>
+                                <span>Angle</span>
+                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="angle-value">45°</span>
                             </div>
-                            <input type="range" id="y-slider" min="150" max="310" value="260" style="width: 100%; cursor: pointer;" />
+                            <input type="range" id="angle-slider" min="0" max="360" value="45" style="width: 100%; cursor: pointer;" />
                         </div>
                     </div>
                 </div>
@@ -965,34 +973,43 @@
             console.log("Tracking enabled");
         }
 
-        // Handle Position Control - Move stick as whole element
+        // Handle Position Control - Move stick as whole element with angle control
         const handleLine = document.getElementById('handle-line');
         const xSlider = document.getElementById('x-slider');
         const ySlider = document.getElementById('y-slider');
+        const angleSlider = document.getElementById('angle-slider');
         const xValue = document.getElementById('x-value');
         const yValue = document.getElementById('y-value');
+        const angleValue = document.getElementById('angle-value');
 
-        // Fixed stick offset (length and angle)
-        const stickOffsetX = 150; // x2 - x1
-        const stickOffsetY = 150; // y2 - y1
+        // Fixed stick length (distance from start to end point)
+        const handleLength = Math.sqrt(150 * 150 + 150 * 150); // ≈ 212.13
 
         function updateHandle() {
             const x1 = parseInt(xSlider.value);
             const y1 = parseInt(ySlider.value);
-            const x2 = x1 + stickOffsetX;
-            const y2 = y1 + stickOffsetY;
+            const angle = parseInt(angleSlider.value);
+
+            // Convert angle to radians (0° points right, 90° points down)
+            const angleRad = (angle * Math.PI) / 180;
+
+            // Calculate end point based on angle and handle length
+            const x2 = x1 + handleLength * Math.cos(angleRad);
+            const y2 = y1 + handleLength * Math.sin(angleRad);
 
             handleLine.setAttribute('x1', x1);
             handleLine.setAttribute('y1', y1);
-            handleLine.setAttribute('x2', x2);
-            handleLine.setAttribute('y2', y2);
+            handleLine.setAttribute('x2', Math.round(x2));
+            handleLine.setAttribute('y2', Math.round(y2));
 
             xValue.textContent = x1;
             yValue.textContent = y1;
+            angleValue.textContent = angle + '°';
         }
 
         xSlider.addEventListener('input', updateHandle);
         ySlider.addEventListener('input', updateHandle);
+        angleSlider.addEventListener('input', updateHandle);
     </script>
 </body>
 </html>
