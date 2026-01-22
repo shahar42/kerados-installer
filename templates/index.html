@@ -254,13 +254,14 @@
 
         .magnifying-glass-container {
             position: relative;
-            width: 320px;
+            width: 400px;
             height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: grab;
             user-select: none;
+            transform-origin: center center;
         }
 
         .magnifying-glass-container:active {
@@ -302,6 +303,26 @@
             stroke: rgba(79, 70, 229, 0.6);
             stroke-width: 2;
             opacity: 0.4;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            width: 280px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .control-panel-title {
+            font-size: 0.85em;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Problem Section */
@@ -760,21 +781,35 @@
             </div>
             <div class="hero-visual">
                 <div style="display: flex; flex-direction: column; gap: 40px; align-items: center;">
-                    <div class="magnifying-glass-container" id="magnifying-glass-container">
-                        <svg class="magnifying-glass" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
-                                    <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                            <!-- Handle -->
-                            <line id="handle-line" x1="183" y1="162" x2="355" y2="287" />
-                            <!-- Magnifying glass circle (lens) - drawn after handle so it appears on top -->
-                            <circle cx="110" cy="110" r="90" />
-                        </svg>
-                        <div id="position-display" style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); background: rgba(79, 70, 229, 0.8); padding: 8px 16px; border-radius: 6px; font-size: 0.85em; white-space: nowrap; color: #fff; pointer-events: none;">X: 183 | Y: 162</div>
+                    <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+                        <div class="magnifying-glass-container" id="magnifying-glass-container">
+                            <svg class="magnifying-glass" id="magnifying-glass-svg" viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <!-- Handle -->
+                                <line id="handle-line" x1="183" y1="162" x2="355" y2="287" />
+                                <!-- Magnifying glass circle (lens) - drawn after handle so it appears on top -->
+                                <circle cx="110" cy="110" r="90" />
+                            </svg>
+                            <div id="position-display" style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); background: rgba(79, 70, 229, 0.8); padding: 8px 16px; border-radius: 6px; font-size: 0.85em; white-space: nowrap; color: #fff; pointer-events: none;">X: -5 | Y: -76</div>
+                        </div>
+
+                        <!-- Control Panel -->
+                        <div class="control-panel">
+                            <div class="control-panel-title">Magnifier Control</div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
+                                    <span>Scale Size</span>
+                                    <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="size-value">100%</span>
+                                </div>
+                                <input type="range" id="size-slider" min="50" max="200" value="100" style="width: 100%; cursor: pointer;" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -951,14 +986,17 @@
             console.log("Tracking enabled");
         }
 
-        // Draggable Magnifying Glass
+        // Draggable & Resizable Magnifying Glass
         const container = document.getElementById('magnifying-glass-container');
+        const svg = document.getElementById('magnifying-glass-svg');
         const positionDisplay = document.getElementById('position-display');
-        const handleLine = document.getElementById('handle-line');
+        const sizeSlider = document.getElementById('size-slider');
+        const sizeValue = document.getElementById('size-value');
 
         let isDragging = false;
         let startX, startY;
-        let currentOffsetX = 0, currentOffsetY = 0;
+        let currentOffsetX = -5, currentOffsetY = -76;
+        let currentSize = 100;
 
         container.addEventListener('mousedown', (e) => {
             isDragging = true;
@@ -973,7 +1011,8 @@
             currentOffsetY = e.clientY - startY;
 
             // Update container position
-            container.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px)`;
+            const scale = currentSize / 100;
+            container.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px) scale(${scale})`;
 
             // Update position display
             positionDisplay.textContent = `X: ${Math.round(currentOffsetX)} | Y: ${Math.round(currentOffsetY)}`;
@@ -982,6 +1021,18 @@
         document.addEventListener('mouseup', () => {
             isDragging = false;
         });
+
+        // Size control
+        sizeSlider.addEventListener('input', (e) => {
+            currentSize = parseInt(e.target.value);
+            const scale = currentSize / 100;
+            container.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px) scale(${scale})`;
+            sizeValue.textContent = currentSize + '%';
+        });
+
+        // Initialize position
+        const scale = currentSize / 100;
+        container.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px) scale(${scale})`;
     </script>
 </body>
 </html>
