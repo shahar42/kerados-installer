@@ -259,6 +259,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .magnifying-glass-container:active {
+            cursor: grabbing;
         }
 
         .magnifying-glass {
@@ -754,7 +760,7 @@
             </div>
             <div class="hero-visual">
                 <div style="display: flex; flex-direction: column; gap: 40px; align-items: center;">
-                    <div class="magnifying-glass-container">
+                    <div class="magnifying-glass-container" id="magnifying-glass-container">
                         <svg class="magnifying-glass" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
                             <defs>
                                 <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -764,39 +770,11 @@
                                 </linearGradient>
                             </defs>
                             <!-- Handle -->
-                            <line id="handle-line" x1="110" y1="110" x2="260" y2="260" />
+                            <line id="handle-line" x1="183" y1="162" x2="355" y2="287" />
                             <!-- Magnifying glass circle (lens) - drawn after handle so it appears on top -->
                             <circle cx="110" cy="110" r="90" />
                         </svg>
-                    </div>
-
-                    <!-- Control Panel -->
-                    <div style="background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(79, 70, 229, 0.3); border-radius: 12px; padding: 24px; width: 280px; backdrop-filter: blur(10px); text-align: center;">
-                        <div style="font-size: 0.85em; font-weight: 700; color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Handle Control</div>
-
-                        <div style="margin-bottom: 20px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
-                                <span>X Position</span>
-                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="x-value">183</span>
-                            </div>
-                            <input type="range" id="x-slider" min="50" max="250" value="183" style="width: 100%; cursor: pointer;" />
-                        </div>
-
-                        <div style="margin-bottom: 20px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
-                                <span>Y Position</span>
-                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="y-value">162</span>
-                            </div>
-                            <input type="range" id="y-slider" min="50" max="250" value="162" style="width: 100%; cursor: pointer;" />
-                        </div>
-
-                        <div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
-                                <span>Angle</span>
-                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="angle-value">36°</span>
-                            </div>
-                            <input type="range" id="angle-slider" min="0" max="360" value="36" style="width: 100%; cursor: pointer;" />
-                        </div>
+                        <div id="position-display" style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); background: rgba(79, 70, 229, 0.8); padding: 8px 16px; border-radius: 6px; font-size: 0.85em; white-space: nowrap; color: #fff; pointer-events: none;">X: 183 | Y: 162</div>
                     </div>
                 </div>
             </div>
@@ -973,43 +951,37 @@
             console.log("Tracking enabled");
         }
 
-        // Handle Position Control - Move stick as whole element with angle control
+        // Draggable Magnifying Glass
+        const container = document.getElementById('magnifying-glass-container');
+        const positionDisplay = document.getElementById('position-display');
         const handleLine = document.getElementById('handle-line');
-        const xSlider = document.getElementById('x-slider');
-        const ySlider = document.getElementById('y-slider');
-        const angleSlider = document.getElementById('angle-slider');
-        const xValue = document.getElementById('x-value');
-        const yValue = document.getElementById('y-value');
-        const angleValue = document.getElementById('angle-value');
 
-        // Fixed stick length (distance from start to end point)
-        const handleLength = Math.sqrt(150 * 150 + 150 * 150); // ≈ 212.13
+        let isDragging = false;
+        let startX, startY;
+        let currentOffsetX = 0, currentOffsetY = 0;
 
-        function updateHandle() {
-            const x1 = parseInt(xSlider.value);
-            const y1 = parseInt(ySlider.value);
-            const angle = parseInt(angleSlider.value);
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX - currentOffsetX;
+            startY = e.clientY - currentOffsetY;
+        });
 
-            // Convert angle to radians (0° points right, 90° points down)
-            const angleRad = (angle * Math.PI) / 180;
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
 
-            // Calculate end point based on angle and handle length
-            const x2 = x1 + handleLength * Math.cos(angleRad);
-            const y2 = y1 + handleLength * Math.sin(angleRad);
+            currentOffsetX = e.clientX - startX;
+            currentOffsetY = e.clientY - startY;
 
-            handleLine.setAttribute('x1', x1);
-            handleLine.setAttribute('y1', y1);
-            handleLine.setAttribute('x2', Math.round(x2));
-            handleLine.setAttribute('y2', Math.round(y2));
+            // Update container position
+            container.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px)`;
 
-            xValue.textContent = x1;
-            yValue.textContent = y1;
-            angleValue.textContent = angle + '°';
-        }
+            // Update position display
+            positionDisplay.textContent = `X: ${Math.round(currentOffsetX)} | Y: ${Math.round(currentOffsetY)}`;
+        });
 
-        xSlider.addEventListener('input', updateHandle);
-        ySlider.addEventListener('input', updateHandle);
-        angleSlider.addEventListener('input', updateHandle);
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
     </script>
 </body>
 </html>
