@@ -753,20 +753,43 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <div class="magnifying-glass-container">
-                    <svg class="magnifying-glass" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <!-- Magnifying glass circle (lens) -->
-                        <circle cx="110" cy="110" r="90" />
-                        <!-- Handle -->
-                        <line x1="110" y1="110" x2="260" y2="260" />
-                    </svg>
+                <div style="display: flex; flex-direction: column; gap: 40px; align-items: center;">
+                    <div class="magnifying-glass-container">
+                        <svg class="magnifying-glass" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Magnifying glass circle (lens) -->
+                            <circle cx="110" cy="110" r="90" />
+                            <!-- Handle -->
+                            <line id="handle-line" x1="110" y1="110" x2="260" y2="260" />
+                        </svg>
+                    </div>
+
+                    <!-- Control Panel -->
+                    <div style="background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(79, 70, 229, 0.3); border-radius: 12px; padding: 24px; width: 280px; backdrop-filter: blur(10px); text-align: center;">
+                        <div style="font-size: 0.85em; font-weight: 700; color: rgba(255, 255, 255, 0.7); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Handle Position</div>
+
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
+                                <span>X Position</span>
+                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="x-value">260</span>
+                            </div>
+                            <input type="range" id="x-slider" min="150" max="310" value="260" style="width: 100%; cursor: pointer;" />
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
+                                <span>Y Position</span>
+                                <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="y-value">260</span>
+                            </div>
+                            <input type="range" id="y-slider" min="150" max="310" value="260" style="width: 100%; cursor: pointer;" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -941,6 +964,27 @@
         function enableTracking() {
             console.log("Tracking enabled");
         }
+
+        // Handle Position Control
+        const handleLine = document.getElementById('handle-line');
+        const xSlider = document.getElementById('x-slider');
+        const ySlider = document.getElementById('y-slider');
+        const xValue = document.getElementById('x-value');
+        const yValue = document.getElementById('y-value');
+
+        function updateHandle() {
+            const x = xSlider.value;
+            const y = ySlider.value;
+
+            handleLine.setAttribute('x2', x);
+            handleLine.setAttribute('y2', y);
+
+            xValue.textContent = x;
+            yValue.textContent = y;
+        }
+
+        xSlider.addEventListener('input', updateHandle);
+        ySlider.addEventListener('input', updateHandle);
     </script>
 </body>
 </html>
