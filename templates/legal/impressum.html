@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impressum - shlookapaka</title>
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        h1, h2 { color: #2c3e50; }
-        .section { margin-bottom: 20px; }
-        .back-link { display: inline-block; margin-top: 20px; text-decoration: none; color: #667eea; }
-    </style>
-</head>
-<body>
+{% extends "legal/base_legal.html" %}
+
+{% block title %}Impressum - shlookapaka{% endblock %}
+
+{% block content %}
     <h1>Impressum</h1>
     
     <div class="section">
@@ -37,7 +28,4 @@
         <p>The European Commission provides a platform for online dispute resolution (ODR): <a href="https://ec.europa.eu/consumers/odr">https://ec.europa.eu/consumers/odr</a>.<br>
         We are not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board.</p>
     </div>
-
-    <a href="/" class="back-link">&larr; Back to Home</a>
-</body>
-</html>
+{% endblock %}

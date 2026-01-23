@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - shlookapaka</title>
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        h1, h2 { color: #2c3e50; }
-        .section { margin-bottom: 20px; }
-        .back-link { display: inline-block; margin-top: 20px; text-decoration: none; color: #667eea; }
-    </style>
-</head>
-<body>
+{% extends "legal/base_legal.html" %}
+
+{% block title %}Privacy Policy - shlookapaka{% endblock %}
+
+{% block content %}
     <h1>Privacy Policy</h1>
     <p>Last Updated: January 5, 2026</p>
 
@@ -56,7 +47,4 @@
         <h2>6. Contact Details</h2>
         <p>If you have any questions about this privacy policy or our privacy practices, please contact us at: [Your Privacy Email Here]</p>
     </div>
-
-    <a href="/" class="back-link">&larr; Back to Home</a>
-</body>
-</html>
+{% endblock %}

@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - shlookapaka</title>
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        h1, h2 { color: #2c3e50; }
-        .section { margin-bottom: 20px; }
-        .back-link { display: inline-block; margin-top: 20px; text-decoration: none; color: #667eea; }
-    </style>
-</head>
-<body>
+{% extends "legal/base_legal.html" %}
+
+{% block title %}Terms of Service - shlookapaka{% endblock %}
+
+{% block content %}
     <h1>Terms of Service</h1>
     <p>Last Updated: January 5, 2026</p>
 
@@ -55,7 +46,4 @@
         <h2>7. Contact Us</h2>
         <p>If you have any questions about these Terms, please contact us at: [Your Support Email Here]</p>
     </div>
-
-    <a href="/" class="back-link">&larr; Back to Home</a>
-</body>
-</html>
+{% endblock %}
