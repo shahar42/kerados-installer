@@ -756,6 +756,7 @@
     </style>
 </head>
 <body>
+    <a href="#main-content" style="position: absolute; left: -9999px; top: 20px; z-index: 1000; background: #4f46e5; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; transition: left 0.3s;" onfocus="this.style.left='20px'" onblur="this.style.left='-9999px'">Skip to content</a>
     <!-- Navigation -->
     <nav>
         <div class="nav-left">
@@ -769,7 +770,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="main-content">
         <div class="hero-content">
             <div class="hero-text">
                 <h1>Find any <span class="highlight">video clip in seconds</span>. Just describe it.</h1>
@@ -782,8 +783,8 @@
             <div class="hero-visual">
                 <div style="display: flex; flex-direction: column; gap: 40px; align-items: center;">
                     <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
-                        <div class="magnifying-glass-container" id="magnifying-glass-container">
-                            <svg class="magnifying-glass" id="magnifying-glass-svg" viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg">
+                        <div class="magnifying-glass-container" id="magnifying-glass-container" role="application" aria-label="Interactive magnifying glass demo: Drag to move">
+                            <svg class="magnifying-glass" id="magnifying-glass-svg" viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <defs>
                                     <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                         <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
@@ -937,7 +938,7 @@
         <div class="cookie-content">
             <p class="cookie-text">
                 We use cookies to keep things smooth.
-                <a href="/legal/privacy">Read more</a>
+                <a href="/legal/privacy" aria-label="Read our Privacy Policy">Read more</a>
             </p>
         </div>
         <div class="cookie-buttons">
