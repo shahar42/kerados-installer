@@ -801,19 +801,7 @@
                                 <!-- Magnifying glass circle (lens) - drawn after handle so it appears on top -->
                                 <circle cx="110" cy="110" r="90" />
                             </svg>
-                            <div id="position-display" style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); background: rgba(79, 70, 229, 0.8); padding: 8px 16px; border-radius: 6px; font-size: 0.85em; white-space: nowrap; color: #fff; pointer-events: none;">X: -5 | Y: -76</div>
-                        </div>
-
-                        <!-- Control Panel -->
-                        <div class="control-panel">
-                            <div class="control-panel-title">Magnifier Control</div>
-                            <div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
-                                    <span>Scale Size</span>
-                                    <span style="color: rgba(79, 70, 229, 0.8); font-weight: 600;" id="size-value">100%</span>
-                                </div>
-                                <input type="range" id="size-slider" min="50" max="200" value="100" style="width: 100%; cursor: pointer;" />
-                            </div>
+                            <div id="position-display" style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); background: rgba(79, 70, 229, 0.8); padding: 8px 16px; border-radius: 6px; font-size: 0.85em; white-space: nowrap; color: #fff; pointer-events: none;">X: 85 | Y: 59</div>
                         </div>
                     </div>
                 </div>
@@ -995,13 +983,11 @@
         const container = document.getElementById('magnifying-glass-container');
         const svg = document.getElementById('magnifying-glass-svg');
         const positionDisplay = document.getElementById('position-display');
-        const sizeSlider = document.getElementById('size-slider');
-        const sizeValue = document.getElementById('size-value');
 
         let isDragging = false;
         let startX, startY;
-        let currentOffsetX = -5, currentOffsetY = -76;
-        let currentSize = 100;
+        let currentOffsetX = 85, currentOffsetY = 59;
+        let currentSize = 136;
 
         container.addEventListener('mousedown', (e) => {
             isDragging = true;
@@ -1025,14 +1011,6 @@
 
         document.addEventListener('mouseup', () => {
             isDragging = false;
-        });
-
-        // Size control
-        sizeSlider.addEventListener('input', (e) => {
-            currentSize = parseInt(e.target.value);
-            const scale = currentSize / 100;
-            container.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px) scale(${scale})`;
-            sizeValue.textContent = currentSize + '%';
         });
 
         // Initialize position
