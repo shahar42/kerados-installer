@@ -259,13 +259,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: grab;
             user-select: none;
             transform-origin: center center;
-        }
-
-        .magnifying-glass-container:active {
-            cursor: grabbing;
         }
 
         .magnifying-glass {
@@ -783,27 +778,8 @@
             <div class="hero-visual">
                 <div style="display: flex; flex-direction: column; gap: 40px; align-items: center;">
                     <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
-                        <div class="magnifying-glass-container" id="magnifying-glass-container" role="application" aria-label="Interactive magnifying glass demo: Drag to move">
+                        <div class="magnifying-glass-container" id="magnifying-glass-container" style="transform: translate(85px, 59px) scale(1.36);">
                             <svg class="magnifying-glass" id="magnifying-glass-svg" viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <defs>
-                                    <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
-                                        <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
-                                    </linearGradient>
-                                    <linearGradient id="handleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
-                                        <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
-                                    </linearGradient>
-                                </defs>
-                                <!-- Handle -->
-                                <line id="handle-line" x1="183" y1="162" x2="355" y2="287" />
-                                <!-- Magnifying glass circle (lens) - drawn after handle so it appears on top -->
-                                <circle cx="110" cy="110" r="90" />
-                            </svg>
-                            <div id="position-display" style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); background: rgba(79, 70, 229, 0.8); padding: 8px 16px; border-radius: 6px; font-size: 0.85em; white-space: nowrap; color: #fff; pointer-events: none;">X: 85 | Y: 59</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -979,44 +955,6 @@
         function enableTracking() {
             console.log("Tracking enabled");
         }
-
-        // Draggable & Resizable Magnifying Glass
-        const container = document.getElementById('magnifying-glass-container');
-        const svg = document.getElementById('magnifying-glass-svg');
-        const positionDisplay = document.getElementById('position-display');
-
-        let isDragging = false;
-        let startX, startY;
-        let currentOffsetX = 85, currentOffsetY = 59;
-        let currentSize = 136;
-
-        container.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX - currentOffsetX;
-            startY = e.clientY - currentOffsetY;
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-
-            currentOffsetX = e.clientX - startX;
-            currentOffsetY = e.clientY - startY;
-
-            // Update container position
-            const scale = currentSize / 100;
-            container.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px) scale(${scale})`;
-
-            // Update position display
-            positionDisplay.textContent = `X: ${Math.round(currentOffsetX)} | Y: ${Math.round(currentOffsetY)}`;
-        });
-
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-
-        // Initialize position
-        const scale = currentSize / 100;
-        container.style.transform = `translate(${currentOffsetX}px, ${currentOffsetY}px) scale(${scale})`;
     </script>
 </body>
 </html>
