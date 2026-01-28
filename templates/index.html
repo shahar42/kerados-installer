@@ -269,8 +269,9 @@
             filter: drop-shadow(0 0 40px rgba(79, 70, 229, 0.3));
         }
 
-        #lens-image {
-            transition: opacity 0.5s ease-in-out;
+        .lens-image {
+            transition: opacity 0.8s ease-in-out;
+            position: absolute;
         }
 
         .magnifying-glass circle {
@@ -784,17 +785,18 @@
                                         <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
                                     </linearGradient>
                                     <clipPath id="lensClip">
-                                        <circle cx="110" cy="110" r="82" />
+                                        <circle id="clip-circle" cx="110" cy="110" r="82" />
                                     </clipPath>
                                 </defs>
                                 <!-- Handle -->
                                 <line id="handle-line" x1="183" y1="162" x2="355" y2="287" />
-                                <!-- Images inside the lens -->
+                                <!-- Images inside the lens - two layers for crossfade -->
                                 <g clip-path="url(#lensClip)">
-                                    <image id="lens-image" x="20" y="20" width="180" height="180" preserveAspectRatio="xMidYMid slice" href="/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg" />
+                                    <image id="lens-image-1" class="lens-image" preserveAspectRatio="xMidYMid slice" href="/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg" opacity="1" />
+                                    <image id="lens-image-2" class="lens-image" preserveAspectRatio="xMidYMid slice" href="/static/wedding_images/Gemini_Generated_Image_3z0s0i3z0s0i3z0s.jpg" opacity="0" />
                                 </g>
                                 <!-- Magnifying glass circle (lens) - drawn after so border appears on top -->
-                                <circle cx="110" cy="110" r="90" style="fill: none;" />
+                                <circle id="lens-circle" style="fill: none;" />
                             </svg>
                         </div>
                 </div>
@@ -940,6 +942,60 @@
     </div>
 
     <script>
+        // ===========================================
+        // MAGNIFYING GLASS GEOMETRY - Single source of truth
+        // Change these values to reposition/resize the lens
+        // ===========================================
+        const LENS = {
+            cx: 110,        // Center X of the lens
+            cy: 110,        // Center Y of the lens
+            r: 90,          // Radius of the visible lens border
+            clipR: 82,      // Radius of the clip path (slightly smaller for border)
+            handleStart: { x: 183, y: 162 },  // Handle connection point
+            handleEnd: { x: 355, y: 287 }     // Handle end point
+        };
+
+        // Apply lens geometry to all dependent elements
+        function applyLensGeometry() {
+            const clipCircle = document.getElementById('clip-circle');
+            const lensCircle = document.getElementById('lens-circle');
+            const handleLine = document.getElementById('handle-line');
+            const image1 = document.getElementById('lens-image-1');
+            const image2 = document.getElementById('lens-image-2');
+
+            // Derived values for images (fill the clip area)
+            const imgX = LENS.cx - LENS.clipR;
+            const imgY = LENS.cy - LENS.clipR;
+            const imgSize = LENS.clipR * 2;
+
+            // Apply to clip path circle
+            clipCircle.setAttribute('cx', LENS.cx);
+            clipCircle.setAttribute('cy', LENS.cy);
+            clipCircle.setAttribute('r', LENS.clipR);
+
+            // Apply to visible lens circle
+            lensCircle.setAttribute('cx', LENS.cx);
+            lensCircle.setAttribute('cy', LENS.cy);
+            lensCircle.setAttribute('r', LENS.r);
+
+            // Apply to handle
+            handleLine.setAttribute('x1', LENS.handleStart.x);
+            handleLine.setAttribute('y1', LENS.handleStart.y);
+            handleLine.setAttribute('x2', LENS.handleEnd.x);
+            handleLine.setAttribute('y2', LENS.handleEnd.y);
+
+            // Apply to images
+            [image1, image2].forEach(img => {
+                img.setAttribute('x', imgX);
+                img.setAttribute('y', imgY);
+                img.setAttribute('width', imgSize);
+                img.setAttribute('height', imgSize);
+            });
+        }
+
+        // Initialize lens geometry on load
+        applyLensGeometry();
+
         const cookieConsent = localStorage.getItem('cookieConsent');
         const banner = document.getElementById('cookie-banner');
 
@@ -972,7 +1028,7 @@
             console.log("Tracking enabled");
         }
 
-        // Wedding images slideshow in magnifying glass
+        // Wedding images slideshow - smooth crossfade
         const weddingImages = [
             '/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg',
             '/static/wedding_images/Gemini_Generated_Image_3z0s0i3z0s0i3z0s.jpg',
@@ -986,19 +1042,35 @@
             '/static/wedding_images/Gemini_Generated_Image_qmlvkdqmlvkdqmlv.jpg',
             '/static/wedding_images/Gemini_Generated_Image_uf6ptpuf6ptpuf6p.jpg'
         ];
-        let currentImageIndex = 0;
-        const lensImage = document.getElementById('lens-image');
 
-        function cycleImages() {
-            lensImage.style.opacity = '0';
-            setTimeout(() => {
-                currentImageIndex = (currentImageIndex + 1) % weddingImages.length;
-                lensImage.setAttribute('href', weddingImages[currentImageIndex]);
-                lensImage.style.opacity = '1';
-            }, 500);
+        // Preload images for smooth transitions
+        weddingImages.forEach(src => { new Image().src = src; });
+
+        let currentIndex = 0;
+        let activeLayer = 1;
+        const image1 = document.getElementById('lens-image-1');
+        const image2 = document.getElementById('lens-image-2');
+
+        function crossfadeImages() {
+            const nextIndex = (currentIndex + 1) % weddingImages.length;
+
+            if (activeLayer === 1) {
+                // Prepare image2 with next image, then crossfade
+                image2.setAttribute('href', weddingImages[nextIndex]);
+                image1.style.opacity = '0';
+                image2.style.opacity = '1';
+                activeLayer = 2;
+            } else {
+                // Prepare image1 with next image, then crossfade
+                image1.setAttribute('href', weddingImages[nextIndex]);
+                image2.style.opacity = '0';
+                image1.style.opacity = '1';
+                activeLayer = 1;
+            }
+            currentIndex = nextIndex;
         }
 
-        setInterval(cycleImages, 3000);
+        setInterval(crossfadeImages, 3000);
     </script>
 </body>
 </html>
