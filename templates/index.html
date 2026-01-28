@@ -267,18 +267,10 @@
             width: 100%;
             height: 100%;
             filter: drop-shadow(0 0 40px rgba(79, 70, 229, 0.3));
-            animation: float-glass 4s ease-in-out infinite;
         }
 
-        @keyframes float-glass {
-            0%, 100% {
-                transform: translateY(0px);
-                filter: drop-shadow(0 0 40px rgba(79, 70, 229, 0.3));
-            }
-            50% {
-                transform: translateY(-15px);
-                filter: drop-shadow(0 0 60px rgba(236, 72, 153, 0.4));
-            }
+        #lens-image {
+            transition: opacity 0.5s ease-in-out;
         }
 
         .magnifying-glass circle {
@@ -791,11 +783,18 @@
                                         <stop offset="50%" style="stop-color:#9333ea;stop-opacity:1" />
                                         <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
                                     </linearGradient>
+                                    <clipPath id="lensClip">
+                                        <circle cx="110" cy="110" r="82" />
+                                    </clipPath>
                                 </defs>
                                 <!-- Handle -->
                                 <line id="handle-line" x1="183" y1="162" x2="355" y2="287" />
-                                <!-- Magnifying glass circle (lens) - drawn after handle so it appears on top -->
-                                <circle cx="110" cy="110" r="90" />
+                                <!-- Images inside the lens -->
+                                <g clip-path="url(#lensClip)">
+                                    <image id="lens-image" x="20" y="20" width="180" height="180" preserveAspectRatio="xMidYMid slice" href="/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg" />
+                                </g>
+                                <!-- Magnifying glass circle (lens) - drawn after so border appears on top -->
+                                <circle cx="110" cy="110" r="90" style="fill: none;" />
                             </svg>
                         </div>
                 </div>
@@ -972,6 +971,34 @@
         function enableTracking() {
             console.log("Tracking enabled");
         }
+
+        // Wedding images slideshow in magnifying glass
+        const weddingImages = [
+            '/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_3z0s0i3z0s0i3z0s.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_5qhxcj5qhxcj5qhx.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_648w5x648w5x648w.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_i8t8i9i8t8i9i8t8.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_me4r7yme4r7yme4r.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_miigm4miigm4miig.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_n3obb7n3obb7n3ob.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_nk7ejnnk7ejnnk7e.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_qmlvkdqmlvkdqmlv.jpg',
+            '/static/wedding_images/Gemini_Generated_Image_uf6ptpuf6ptpuf6p.jpg'
+        ];
+        let currentImageIndex = 0;
+        const lensImage = document.getElementById('lens-image');
+
+        function cycleImages() {
+            lensImage.style.opacity = '0';
+            setTimeout(() => {
+                currentImageIndex = (currentImageIndex + 1) % weddingImages.length;
+                lensImage.setAttribute('href', weddingImages[currentImageIndex]);
+                lensImage.style.opacity = '1';
+            }, 500);
+        }
+
+        setInterval(cycleImages, 3000);
     </script>
 </body>
 </html>
