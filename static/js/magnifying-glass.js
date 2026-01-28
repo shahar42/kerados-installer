@@ -1,23 +1,36 @@
 const MagnifyingGlass = (() => {
-    // Single source of truth for geometry
-    const config = Object.freeze({
+    // Configuration for Desktop (Default)
+    const desktopConfig = Object.freeze({
         cx: 110,
         cy: 110,
-        r: 90,
-        clipR: 82,
-        handleStart: { x: 183, y: 162 },
-        handleEnd: { x: 335, y: 272 }
+        r: 104,
+        clipR: 94,
+        handleStart: { x: 194, y: 170 },
+        handleEnd: { x: 369, y: 295 }
     });
 
+    // Configuration for Mobile (Smaller, more compact)
+    const mobileConfig = Object.freeze({
+        cx: 90,
+        cy: 90,
+        r: 70,
+        clipR: 64,
+        handleStart: { x: 148, y: 132 }, // Adjusted for smaller circle
+        handleEnd: { x: 260, y: 220 }    // Shorter handle
+    });
+
+    let currentConfig = desktopConfig;
     const elements = {};
+    const listeners = [];
 
     function cacheElements() {
         elements.clipCircle = document.getElementById('clip-circle');
         elements.lensCircle = document.getElementById('lens-circle');
         elements.handleLine = document.getElementById('handle-line');
+        elements.svg = document.getElementById('magnifying-glass-svg');
     }
 
-    function applyGeometry() {
+    function applyGeometry(config) {
         if (!elements.clipCircle || !elements.lensCircle || !elements.handleLine) return;
 
         // Apply to clip path circle
@@ -37,13 +50,39 @@ const MagnifyingGlass = (() => {
         elements.handleLine.setAttribute('y2', config.handleEnd.y);
     }
 
+    function notifyListeners() {
+        listeners.forEach(callback => callback(currentConfig));
+    }
+
+    function checkResponsive() {
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const newConfig = isMobile ? mobileConfig : desktopConfig;
+
+        if (newConfig !== currentConfig) {
+            currentConfig = newConfig;
+            applyGeometry(currentConfig);
+            notifyListeners();
+        }
+    }
+
     return {
-        // Expose config for other modules (like LensGallery) to use
-        config,
+        get currentConfig() { return currentConfig; },
         
+        subscribe(callback) {
+            listeners.push(callback);
+        },
+
         init() {
             cacheElements();
-            applyGeometry();
+            
+            // Initial check
+            checkResponsive();
+            
+            // Listen for resize
+            window.addEventListener('resize', () => {
+                // Debounce could be added here if needed
+                requestAnimationFrame(checkResponsive);
+            });
         }
     };
 })();

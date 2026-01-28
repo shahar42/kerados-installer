@@ -76,4 +76,19 @@ class LensGallery {
             this.container.appendChild(img);
         });
     }
+
+    updateGeometry(newConfig) {
+        this.geometry = newConfig;
+        const imgX = this.geometry.cx - this.geometry.clipR;
+        const imgY = this.geometry.cy - this.geometry.clipR;
+        const imgSize = this.geometry.clipR * 2;
+
+        const images = this.container.querySelectorAll('image');
+        images.forEach(img => {
+            img.setAttribute("x", imgX);
+            img.setAttribute("y", imgY);
+            img.setAttribute("width", imgSize);
+            img.setAttribute("height", imgSize);
+        });
+    }
 }
