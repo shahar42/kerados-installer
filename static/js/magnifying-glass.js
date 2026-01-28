@@ -6,7 +6,7 @@ const MagnifyingGlass = (() => {
         r: 90,
         clipR: 82,
         handleStart: { x: 183, y: 162 },
-        handleEnd: { x: 355, y: 287 }
+        handleEnd: { x: 335, y: 272 }
     });
 
     const elements = {};
