@@ -15,13 +15,19 @@ class LensGallery {
     }
 
     init() {
-        // Clear container
-        this.container.innerHTML = '';
-        
         // Geometry derived from injected config
         const imgX = this.geometry.cx - this.geometry.clipR;
         const imgY = this.geometry.cy - this.geometry.clipR;
         const imgSize = this.geometry.clipR * 2;
+
+        // Ensure placeholder (if exists) gets correct geometry immediately
+        const placeholder = document.getElementById('lens-placeholder');
+        if (placeholder) {
+            placeholder.setAttribute("x", imgX);
+            placeholder.setAttribute("y", imgY);
+            placeholder.setAttribute("width", imgSize);
+            placeholder.setAttribute("height", imgSize);
+        }
 
         // Animation calculations
         const count = this.images.length;
