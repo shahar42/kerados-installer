@@ -1,12 +1,12 @@
 const MagnifyingGlass = (() => {
     // Configuration for Desktop (Default)
     const desktopConfig = Object.freeze({
-        cx: 110,
-        cy: 110,
+        cx: 130,
+        cy: 130,
         r: 120,
         clipR: 110,
-        handleStart: { x: 207, y: 179 },
-        handleEnd: { x: 408, y: 323 }
+        handleStart: { x: 227, y: 199 },
+        handleEnd: { x: 428, y: 343 }
     });
 
     // Configuration for Mobile (Smaller, more compact)
