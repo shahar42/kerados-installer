@@ -4,8 +4,8 @@ class LensGallery {
         this.images = imageUrls;
         this.geometry = geometryConfig;
         this.options = {
-            duration: 3000,     // Time from start of this image to start of next
-            fadeDuration: 1000, // Duration of the fade transition
+            duration: 2000,     // Time from start of this image to start of next
+            fadeDuration: 800,  // Duration of the fade transition
             ...options
         };
         
