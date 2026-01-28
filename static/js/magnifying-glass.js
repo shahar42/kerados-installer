@@ -4,7 +4,7 @@ const MagnifyingGlass = (() => {
         cx: 110,
         cy: 110,
         r: 104,
-        clipR: 94,
+        clipR: 96,
         handleStart: { x: 194, y: 170 },
         handleEnd: { x: 369, y: 295 }
     });
@@ -75,7 +75,10 @@ const MagnifyingGlass = (() => {
         init() {
             cacheElements();
             
-            // Initial check
+            // Force initial application of geometry
+            applyGeometry(currentConfig);
+            
+            // Initial check (in case we start on mobile)
             checkResponsive();
             
             // Listen for resize
