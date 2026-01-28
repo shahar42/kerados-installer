@@ -790,10 +790,9 @@
                                 </defs>
                                 <!-- Handle -->
                                 <line id="handle-line" x1="183" y1="162" x2="355" y2="287" />
-                                <!-- Images inside the lens - two layers for crossfade -->
-                                <g clip-path="url(#lensClip)">
-                                    <image id="lens-image-1" class="lens-image" preserveAspectRatio="xMidYMid slice" href="/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg" opacity="1" />
-                                    <image id="lens-image-2" class="lens-image" preserveAspectRatio="xMidYMid slice" href="/static/wedding_images/Gemini_Generated_Image_3z0s0i3z0s0i3z0s.jpg" opacity="0" />
+                                <!-- Images inside the lens - dynamic gallery container -->
+                                <g id="lens-images-container" clip-path="url(#lensClip)">
+                                    <!-- Images injected by JS -->
                                 </g>
                                 <!-- Magnifying glass circle (lens) - drawn after so border appears on top -->
                                 <circle id="lens-circle" style="fill: none;" />
@@ -960,14 +959,7 @@
             const clipCircle = document.getElementById('clip-circle');
             const lensCircle = document.getElementById('lens-circle');
             const handleLine = document.getElementById('handle-line');
-            const image1 = document.getElementById('lens-image-1');
-            const image2 = document.getElementById('lens-image-2');
-
-            // Derived values for images (fill the clip area)
-            const imgX = LENS.cx - LENS.clipR;
-            const imgY = LENS.cy - LENS.clipR;
-            const imgSize = LENS.clipR * 2;
-
+            
             // Apply to clip path circle
             clipCircle.setAttribute('cx', LENS.cx);
             clipCircle.setAttribute('cy', LENS.cy);
@@ -983,14 +975,6 @@
             handleLine.setAttribute('y1', LENS.handleStart.y);
             handleLine.setAttribute('x2', LENS.handleEnd.x);
             handleLine.setAttribute('y2', LENS.handleEnd.y);
-
-            // Apply to images
-            [image1, image2].forEach(img => {
-                img.setAttribute('x', imgX);
-                img.setAttribute('y', imgY);
-                img.setAttribute('width', imgSize);
-                img.setAttribute('height', imgSize);
-            });
         }
 
         // Initialize lens geometry on load
@@ -1028,7 +1012,10 @@
             console.log("Tracking enabled");
         }
 
-        // Wedding images slideshow - smooth crossfade
+        // ===========================================
+        // DYNAMIC LENS GALLERY
+        // Handles smooth CSS-based crossfading of N images
+        // ===========================================
         const weddingImages = [
             '/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg',
             '/static/wedding_images/Gemini_Generated_Image_3z0s0i3z0s0i3z0s.jpg',
@@ -1043,34 +1030,108 @@
             '/static/wedding_images/Gemini_Generated_Image_uf6ptpuf6ptpuf6p.jpg'
         ];
 
-        // Preload images for smooth transitions
-        weddingImages.forEach(src => { new Image().src = src; });
-
-        let currentIndex = 0;
-        let activeLayer = 1;
-        const image1 = document.getElementById('lens-image-1');
-        const image2 = document.getElementById('lens-image-2');
-
-        function crossfadeImages() {
-            const nextIndex = (currentIndex + 1) % weddingImages.length;
-
-            if (activeLayer === 1) {
-                // Prepare image2 with next image, then crossfade
-                image2.setAttribute('href', weddingImages[nextIndex]);
-                image1.style.opacity = '0';
-                image2.style.opacity = '1';
-                activeLayer = 2;
-            } else {
-                // Prepare image1 with next image, then crossfade
-                image1.setAttribute('href', weddingImages[nextIndex]);
-                image2.style.opacity = '0';
-                image1.style.opacity = '1';
-                activeLayer = 1;
+        class LensGallery {
+            constructor(containerId, imageUrls, options = {}) {
+                this.container = document.getElementById(containerId);
+                this.images = imageUrls;
+                this.options = {
+                    duration: 3000,     // Time from start of this image to start of next
+                    fadeDuration: 1000, // Duration of the fade transition
+                    ...options
+                };
+                
+                if (this.container && this.images.length > 0) {
+                    this.init();
+                }
             }
-            currentIndex = nextIndex;
+
+            init() {
+                // Clear container
+                this.container.innerHTML = '';
+                
+                // Geometry derived from LENS constant
+                const imgX = LENS.cx - LENS.clipR;
+                const imgY = LENS.cy - LENS.clipR;
+                const imgSize = LENS.clipR * 2;
+
+                // Animation calculations
+                const count = this.images.length;
+                const totalCycleTime = count * this.options.duration;
+                
+                // Percentages for keyframes
+                // Each image timeline:
+                // 0% -> Fade In Start (Opacity 0)
+                // [fade/total] -> Fade In End (Opacity 1)
+                // [duration/total] -> Fade Out Start (Opacity 1)
+                // [(duration+fade)/total] -> Fade Out End (Opacity 0)
+                
+                const pctFade = (this.options.fadeDuration / totalCycleTime) * 100;
+                const pctShow = (this.options.duration / totalCycleTime) * 100;
+                const pctFadeOutEnd = ((this.options.duration + this.options.fadeDuration) / totalCycleTime) * 100;
+
+                // Create Style for Keyframes
+                const styleId = 'lens-gallery-style';
+                let styleEl = document.getElementById(styleId);
+                if (!styleEl) {
+                    styleEl = document.createElement('style');
+                    styleEl.id = styleId;
+                    document.head.appendChild(styleEl);
+                }
+
+                // Keyframes Definition
+                // Note: We use a small epsilon for 0% to ensure no flash, though opacity:0 handles it.
+                // The overlap comes from: Image N starts fading in at T=0. Image N-1 starts fading out at T=0 (conceptually).
+                // Actually, with animation-delay, they are just shifted.
+                // Logic check:
+                // Img 1 starts at 0ms. Fades in 0-1s. Visible 1-3s. Fades out 3-4s. (If duration=3s, fade=1s)
+                // Img 2 starts at 3ms. Fades in 3-4s. Visible 4-6s.
+                // At 3-4s: Img 1 is fading OUT. Img 2 is fading IN. Perfect crossfade.
+                
+                const keyframes = `
+                    @keyframes lensFadeLoop {
+                        0% { opacity: 0; }
+                        ${pctFade.toFixed(3)}% { opacity: 1; }
+                        ${pctShow.toFixed(3)}% { opacity: 1; }
+                        ${pctFadeOutEnd.toFixed(3)}% { opacity: 0; }
+                        100% { opacity: 0; }
+                    }
+                `;
+                styleEl.textContent = keyframes;
+
+                // Create Image Elements
+                this.images.forEach((src, index) => {
+                    const img = document.createElementNS("http://www.w3.org/2000/svg", "image");
+                    img.setAttribute("href", src);
+                    img.setAttribute("x", imgX);
+                    img.setAttribute("y", imgY);
+                    img.setAttribute("width", imgSize);
+                    img.setAttribute("height", imgSize);
+                    img.setAttribute("preserveAspectRatio", "xMidYMid slice");
+                    
+                    // Style
+                    img.style.opacity = '0'; 
+                    img.style.animationName = 'lensFadeLoop';
+                    img.style.animationDuration = `${totalCycleTime}ms`;
+                    img.style.animationIterationCount = 'infinite';
+                    img.style.animationTimingFunction = 'linear';
+                    
+                    // Stagger: Each image starts its cycle 'duration' ms after the previous
+                    const delay = index * this.options.duration;
+                    img.style.animationDelay = `${delay}ms`;
+                    
+                    this.container.appendChild(img);
+                });
+            }
         }
 
-        setInterval(crossfadeImages, 3000);
+        // Start the gallery
+        // duration: 3000ms (3s) per slide spacing.
+        // fadeDuration: 1000ms (1s) overlap.
+        // Means visible for 2s alone, then 1s crossfade.
+        new LensGallery('lens-images-container', weddingImages, {
+            duration: 3000,
+            fadeDuration: 1000
+        });
     </script>
 </body>
 </html>
