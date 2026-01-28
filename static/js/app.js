@@ -27,7 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
         '/static/wedding_images/Gemini_Generated_Image_rzxj68rzxj68rzxj.jpg',
         '/static/wedding_images/Gemini_Generated_Image_uf6ptpuf6ptpuf6p.jpg',
         '/static/wedding_images/Gemini_Generated_Image_vslef2vslef2vsle.jpg',
-        '/static/wedding_images/Gemini_Generated_Image_xhx20jxhx20jxhx2.jpg'
+        '/static/wedding_images/Gemini_Generated_Image_xhx20jxhx20jxhx2.jpg',
+        '/static/wedding_images/Gemini_Generated_Image_ca51vhca51vhca51.jpg',
+        '/static/wedding_images/Gemini_Generated_Image_iyw1p6iyw1p6iyw1.jpg',
+        '/static/wedding_images/Gemini_Generated_Image_l5vjeul5vjeul5vj.jpg',
+        '/static/wedding_images/Gemini_Generated_Image_pu6pstpu6pstpu6p.jpg'
     ];
 
     // Preload images
