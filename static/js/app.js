@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pass the geometry config from MagnifyingGlass to LensGallery
     const gallery = new LensGallery('lens-images-container', weddingImages, MagnifyingGlass.currentConfig, {
-        duration: 3000,
-        fadeDuration: 1000
+        duration: 5000,
+        fadeDuration: 2000
     });
 
     // Subscribe to geometry changes (Desktop <-> Mobile switch)
