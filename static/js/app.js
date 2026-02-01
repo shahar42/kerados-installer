@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Initialize Magnifying Glass Geometry
     MagnifyingGlass.init();
 
+    // 3. Initialize Scroll Reveal
+    ScrollReveal.init();
+
     // 3. Initialize Lens Gallery
     const weddingImages = [
         '/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg',
