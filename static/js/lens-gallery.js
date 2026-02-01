@@ -8,7 +8,7 @@ class LensGallery {
             fadeDuration: 800,  // Duration of the fade transition
             ...options
         };
-        
+
         if (this.container && this.images.length > 0) {
             this.init();
         }
@@ -32,7 +32,7 @@ class LensGallery {
         // Animation calculations
         const count = this.images.length;
         const totalCycleTime = count * this.options.duration;
-        
+
         // Percentages for keyframes
         const pctFade = (this.options.fadeDuration / totalCycleTime) * 100;
         const pctShow = (this.options.duration / totalCycleTime) * 100;
@@ -67,18 +67,18 @@ class LensGallery {
             img.setAttribute("width", imgSize);
             img.setAttribute("height", imgSize);
             img.setAttribute("preserveAspectRatio", "xMidYMid slice");
-            
+
             // Style
-            img.style.opacity = '0'; 
+            img.style.opacity = '0';
             img.style.animationName = 'lensFadeLoop';
             img.style.animationDuration = `${totalCycleTime}ms`;
             img.style.animationIterationCount = 'infinite';
-            img.style.animationTimingFunction = 'linear';
-            
+            img.style.animationTimingFunction = 'cubic-bezier(0.37, 0, 0.63, 1)'; // ease-in-out-sine
+
             // Stagger: Each image starts its cycle 'duration' ms after the previous
             const delay = index * this.options.duration;
             img.style.animationDelay = `${delay}ms`;
-            
+
             this.container.appendChild(img);
         });
     }

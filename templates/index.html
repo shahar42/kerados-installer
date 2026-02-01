@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kerados helps videographers find any video clip in seconds using local AI. Search footage by description or face recognition. One-time $169 purchase, no cloud, 100% private.">
     <title>Kerados - Find Any Video Clip in Seconds</title>
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
+
 <body>
-    <a href="#main-content" style="position: absolute; left: -9999px; top: 20px; z-index: 1000; background: #4f46e5; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; transition: left 0.3s;" onfocus="this.style.left='20px'" onblur="this.style.left='-9999px'">Skip to content</a>
+    <a href="#main-content"
+        style="position: absolute; left: -9999px; top: 20px; z-index: 1000; background: #4f46e5; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; transition: left 0.3s;"
+        onfocus="this.style.left='20px'" onblur="this.style.left='-9999px'">Skip to content</a>
     <!-- Navigation -->
     <nav>
         <div class="nav-left">
@@ -27,17 +30,22 @@
         <div class="hero-content">
             <div class="hero-text">
                 <h1>Find any <span class="highlight">video clip or image in seconds</span>. Just describe it.</h1>
-                <p>Stop scrubbing through footage. Index your entire hard drive and search for descriptions or specific faces—"Bride crying" or "Groom laughing"—and get the exact timestamp instantly.</p>
+                <p>Stop scrubbing through footage. Index your entire hard drive and search for descriptions or specific
+                    faces—"Bride crying" or "Groom laughing"—and get the exact timestamp instantly.</p>
                 <div class="hero-buttons">
                     <a href="/download" class="btn-primary">Get Kerados - $169 (One-Time)</a>
-                    <button class="btn-secondary" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">See How It Works</button>
+                    <button class="btn-secondary"
+                        onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">See How
+                        It Works</button>
                 </div>
             </div>
             <div class="hero-visual">
                 <div style="display: flex; flex-direction: column; gap: 40px; align-items: center;">
                     <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
-                        <div class="magnifying-glass-container" id="magnifying-glass-container" style="transform: translate(85px, 49px) scale(1.496);">
-                            <svg class="magnifying-glass" id="magnifying-glass-svg" viewBox="0 0 500 410" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <div class="magnifying-glass-container" id="magnifying-glass-container"
+                            style="transform: translate(85px, 49px) scale(1.496);">
+                            <svg class="magnifying-glass" id="magnifying-glass-svg" viewBox="0 0 500 410"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <defs>
                                     <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                         <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
@@ -58,24 +66,24 @@
                                 <!-- Images inside the lens - dynamic gallery container -->
                                 <g id="lens-images-container" clip-path="url(#lensClip)">
                                     <!-- Static placeholder for immediate render (matches desktop config) -->
-                                    <image id="lens-placeholder" 
-                                           href="/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg" 
-                                           x="17" y="17" width="276" height="276" 
-                                           preserveAspectRatio="xMidYMid slice" />
+                                    <image id="lens-placeholder"
+                                        href="/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg" x="17"
+                                        y="17" width="276" height="276" preserveAspectRatio="xMidYMid slice" />
                                 </g>
                                 <!-- Magnifying glass circle (lens) - drawn after so border appears on top -->
                                 <circle id="lens-circle" style="fill: none;" />
                             </svg>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- Problem Section -->
     <section class="problem">
         <h2>You didn't become a videographer to be a file librarian.</h2>
-        <p>You have terabytes of footage. Finding the right 5 seconds shouldn't take hours. The panic of knowing you have the shot but spending four hours scrubbing through timelines? That's the nightmare we end.</p>
+        <p>You have terabytes of footage. Finding the right 5 seconds shouldn't take hours. The panic of knowing you
+            have the shot but spending four hours scrubbing through timelines? That's the nightmare we end.</p>
     </section>
 
     <!-- How It Works -->
@@ -86,14 +94,17 @@
                 <div class="step-number">1</div>
                 <h3>Index Your Drive</h3>
                 <p>Select your folder. Kerados watches your footage with local AI—no cloud, no uploads.</p>
-                <div class="step-visual placeholder">Screenshot placeholder<br><em>Folder selection modal coming soon</em></div>
+                <div class="step-visual placeholder">Screenshot placeholder<br><em>Folder selection modal coming
+                        soon</em></div>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
                 <h3>Search by Text or Face</h3>
-                <p>Type "bride dancing" or select a face to find every match. The AI understands context and identity.</p>
+                <p>Type "bride dancing" or select a face to find every match. The AI understands context and identity.
+                </p>
                 <div class="step-visual">
-                    <img src="/static/images/screen_shot_of_search_bar_with_results.jpeg" alt="Kerados search interface showing results">
+                    <img src="/static/images/screen_shot_of_search_bar_with_results.jpeg"
+                        alt="Kerados search interface showing results">
                 </div>
             </div>
             <div class="step">
@@ -122,7 +133,8 @@
             <div class="feature">
                 <div class="feature-icon">👤</div>
                 <h3>Face Recognition</h3>
-                <p>Tag the bride once, find her in 500 clips. Perfect for specialized edits and finding VIPs instantly.</p>
+                <p>Tag the bride once, find her in 500 clips. Perfect for specialized edits and finding VIPs instantly.
+                </p>
             </div>
             <div class="feature">
                 <div class="feature-icon">⚡</div>
@@ -147,15 +159,19 @@
         <h2>From Videographers Like You</h2>
         <div class="testimonials-grid">
             <div class="testimonial">
-                <div class="testimonial-text">"I used to spend 2 hours culling footage for a wedding highlight reel. With Kerados, I found the specific toasts and first dance in 30 seconds. I can now take on more weddings."</div>
+                <div class="testimonial-text">"I used to spend 2 hours culling footage for a wedding highlight reel.
+                    With Kerados, I found the specific toasts and first dance in 30 seconds. I can now take on more
+                    weddings."</div>
                 <div class="testimonial-author">— Wedding Videographer (Testimonial Placeholder)</div>
             </div>
             <div class="testimonial">
-                <div class="testimonial-text">"The nightmare of scrubbing through corporate event footage is over. Search by what I'm actually looking for, not file names. Game changer for my editing bay."</div>
+                <div class="testimonial-text">"The nightmare of scrubbing through corporate event footage is over.
+                    Search by what I'm actually looking for, not file names. Game changer for my editing bay."</div>
                 <div class="testimonial-author">— Corporate Videographer (Testimonial Placeholder)</div>
             </div>
             <div class="testimonial">
-                <div class="testimonial-text">"Finally, AI that doesn't require a monthly subscription and doesn't upload my footage to some server. Kerados respects my privacy and my wallet."</div>
+                <div class="testimonial-text">"Finally, AI that doesn't require a monthly subscription and doesn't
+                    upload my footage to some server. Kerados respects my privacy and my wallet."</div>
                 <div class="testimonial-author">— Independent Filmmaker (Testimonial Placeholder)</div>
             </div>
         </div>
@@ -164,7 +180,8 @@
     <!-- Final CTA -->
     <section class="final-cta">
         <h2>Stop Wasting Hours. Start Creating.</h2>
-        <p>Your footage is too valuable to lose time searching. Kerados finds it faster so you can focus on editing, not filing.</p>
+        <p>Your footage is too valuable to lose time searching. Kerados finds it faster so you can focus on editing, not
+            filing.</p>
         <a href="/download" class="btn-primary">Buy Kerados Now - $169 (Lifetime License)</a>
     </section>
 
@@ -215,4 +232,5 @@
     <script src="/static/js/lens-gallery.js"></script>
     <script src="/static/js/app.js"></script>
 </body>
+
 </html>
