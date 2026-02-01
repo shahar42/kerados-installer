@@ -363,6 +363,57 @@
             stroke-linecap: round;
         }
 
+        /* Lens Draw Animation - Initial hidden state */
+        .magnifying-glass-container.loading {
+            opacity: 0;
+        }
+
+        .magnifying-glass-container.draw-ready #lens-circle {
+            stroke-dasharray: 920;
+            stroke-dashoffset: 920;
+            animation: drawLens 1.2s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+        }
+
+        .magnifying-glass-container.draw-ready #handle-line {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: drawHandle 0.6s cubic-bezier(0.37, 0, 0.63, 1) 0.8s forwards;
+        }
+
+        .magnifying-glass-container.draw-ready #lens-images-container {
+            opacity: 0;
+            animation: fadeInImages 0.8s cubic-bezier(0.37, 0, 0.63, 1) 1.2s forwards;
+        }
+
+        .magnifying-glass-container.draw-ready {
+            opacity: 0;
+            animation: containerFadeIn 0.3s ease-out forwards;
+        }
+
+        @keyframes containerFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes drawLens {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes drawHandle {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes fadeInImages {
+            to {
+                opacity: 1;
+            }
+        }
+
         .magnifying-glass-content {
             fill: none;
             stroke: rgba(79, 70, 229, 0.6);
