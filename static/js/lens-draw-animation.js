@@ -6,10 +6,10 @@ const LensDrawAnimation = (() => {
     const LENS_CIRCUMFERENCE = 920;
     const HANDLE_LENGTH = 250;
 
-    // Timings
-    const LENS_DURATION = 1400;   // Slightly slower for smoothness
-    const HANDLE_DURATION = 900;  // Longer for smoother motion
-    const HANDLE_DELAY = 1100;    // Starts 300ms before lens finishes
+    // Timings - sequential: circle finishes, then handle starts
+    const LENS_DURATION = 1400;
+    const HANDLE_DURATION = 600;
+    const HANDLE_DELAY = LENS_DURATION;  // Starts exactly when circle finishes
 
     // Easing - sine ease-in-out as cubic bezier
     const EASING = 'cubic-bezier(0.37, 0, 0.63, 1)';
