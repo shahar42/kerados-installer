@@ -49,11 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const lensCircle = document.getElementById('lens-circle');
             const handleLine = document.getElementById('handle-line');
 
-            // Start images fade-in alongside the draw animation
-            container.classList.add('images-ready');
-
             // Use Web Animations API for smoother GPU performance
-            LensDrawAnimation.play(container, lensCircle, handleLine);
+            LensDrawAnimation.play(container, lensCircle, handleLine, () => {
+                // When lens drawing finishes, trigger images fade-in
+                container.classList.add('images-ready');
+            });
         };
         firstImage.src = weddingImages[0];
     } else {
