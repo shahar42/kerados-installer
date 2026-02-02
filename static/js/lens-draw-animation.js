@@ -66,12 +66,12 @@ const LensDrawAnimation = (() => {
             animateContainer(container);
             const lensAnim = animateLens(lensCircle);
 
-            // Chain: when lens finishes, start handle
+            // Chain: when lens finishes, start handle and trigger images
             lensAnim.onfinish = () => {
-                const handleAnim = animateHandle(handleLine);
-                // Call completion callback when handle finishes
+                animateHandle(handleLine);
+                // Trigger images fade-in alongside handle draw
                 if (onComplete) {
-                    handleAnim.onfinish = onComplete;
+                    onComplete();
                 }
             };
         }
