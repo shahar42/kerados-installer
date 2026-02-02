@@ -8,8 +8,8 @@ const LensDrawAnimation = (() => {
 
     // Timings
     const LENS_DURATION = 1400;   // Slightly slower for smoothness
-    const HANDLE_DURATION = 700;
-    const HANDLE_DELAY = 1300;    // Starts 100ms before lens finishes
+    const HANDLE_DURATION = 900;  // Longer for smoother motion
+    const HANDLE_DELAY = 1100;    // Starts 300ms before lens finishes
 
     // Easing - sine ease-in-out as cubic bezier
     const EASING = 'cubic-bezier(0.37, 0, 0.63, 1)';
