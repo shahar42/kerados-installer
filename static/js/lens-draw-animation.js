@@ -1,27 +1,26 @@
 /**
  * Lens Draw Animation - Web Animations API version
- * More performant than CSS animations for stroke-dashoffset
+ * Sequential: circle completes, then handle draws immediately
  */
 const LensDrawAnimation = (() => {
     const LENS_CIRCUMFERENCE = 920;
     const HANDLE_LENGTH = 250;
 
-    // Timings - sequential: circle finishes, then handle starts
+    // Timings
     const LENS_DURATION = 1400;
     const HANDLE_DURATION = 600;
-    const HANDLE_DELAY = LENS_DURATION;  // Starts exactly when circle finishes
 
     // Easing - sine ease-in-out as cubic bezier
     const EASING = 'cubic-bezier(0.37, 0, 0.63, 1)';
 
-    function animateLens(lensCircle, onComplete) {
+    function animateLens(lensCircle) {
         // Set initial state
         lensCircle.style.strokeDasharray = LENS_CIRCUMFERENCE;
         lensCircle.style.strokeDashoffset = LENS_CIRCUMFERENCE;
         lensCircle.style.transformOrigin = '155px 155px';
         lensCircle.style.transform = 'rotate(36deg)';
 
-        const animation = lensCircle.animate([
+        return lensCircle.animate([
             { strokeDashoffset: LENS_CIRCUMFERENCE },
             { strokeDashoffset: 0 }
         ], {
@@ -29,9 +28,6 @@ const LensDrawAnimation = (() => {
             easing: EASING,
             fill: 'forwards'
         });
-
-        animation.onfinish = onComplete;
-        return animation;
     }
 
     function animateHandle(handleLine) {
@@ -45,8 +41,7 @@ const LensDrawAnimation = (() => {
         ], {
             duration: HANDLE_DURATION,
             easing: EASING,
-            fill: 'forwards',
-            delay: HANDLE_DELAY
+            fill: 'forwards'
         });
     }
 
@@ -62,11 +57,19 @@ const LensDrawAnimation = (() => {
     }
 
     return {
-        play(container, lensCircle, handleLine, onLensComplete) {
-            // Start all animations
+        play(container, lensCircle, handleLine, onComplete) {
+            // Start container fade and lens draw
             animateContainer(container);
-            animateLens(lensCircle, onLensComplete);
-            animateHandle(handleLine);
+            const lensAnim = animateLens(lensCircle);
+
+            // Chain: when lens finishes, start handle
+            lensAnim.onfinish = () => {
+                const handleAnim = animateHandle(handleLine);
+                // Call completion callback when handle finishes
+                if (onComplete) {
+                    handleAnim.onfinish = onComplete;
+                }
+            };
         }
     };
 })();
