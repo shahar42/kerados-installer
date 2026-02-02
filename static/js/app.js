@@ -45,13 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstImage = new Image();
         firstImage.onload = firstImage.onerror = () => {
             container.classList.remove('loading');
-            container.classList.add('draw-ready');
 
-            // Show images when lens circle finishes (when stick drawing starts)
             const lensCircle = document.getElementById('lens-circle');
-            lensCircle.addEventListener('animationend', () => {
+            const handleLine = document.getElementById('handle-line');
+
+            // Use Web Animations API for smoother GPU performance
+            LensDrawAnimation.play(container, lensCircle, handleLine, () => {
+                // When lens finishes, trigger images fade-in
                 container.classList.add('images-ready');
-            }, { once: true });
+            });
         };
         firstImage.src = weddingImages[0];
     } else {
