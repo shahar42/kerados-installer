@@ -58,6 +58,10 @@ const LensDrawAnimation = (() => {
 
     return {
         play(container, lensCircle, handleLine, onComplete) {
+            // Hide handle immediately (before circle even starts)
+            handleLine.style.strokeDasharray = HANDLE_LENGTH;
+            handleLine.style.strokeDashoffset = HANDLE_LENGTH;
+
             // Start container fade and lens draw
             animateContainer(container);
             const lensAnim = animateLens(lensCircle);
