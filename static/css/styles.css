@@ -375,7 +375,7 @@
         }
 
         .magnifying-glass-container.images-ready #lens-images-container {
-            animation: fadeInImages 1.5s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+            animation: fadeInImages 1.5s cubic-bezier(0.37, 0, 0.63, 1) 0.3s forwards;
         }
 
         @keyframes fadeInImages {
