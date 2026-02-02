@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
             container.classList.remove('loading');
             container.classList.add('draw-ready');
 
-            // Wait for handle draw animation to finish before showing images
-            const handleLine = document.getElementById('handle-line');
-            handleLine.addEventListener('animationend', () => {
+            // Show images when lens circle finishes (when stick drawing starts)
+            const lensCircle = document.getElementById('lens-circle');
+            lensCircle.addEventListener('animationend', () => {
                 container.classList.add('images-ready');
             }, { once: true });
         };
