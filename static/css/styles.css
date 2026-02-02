@@ -390,7 +390,8 @@
             }
         }
 
-        .magnifying-glass-container.draw-ready #lens-images-container {
+        /* Images hidden by default, fade in when animation is ready */
+        #lens-images-container {
             opacity: 0;
         }
 
