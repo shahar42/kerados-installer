@@ -38,14 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const container = document.getElementById('magnifying-glass-container');
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
 
-    // Preload first image, then trigger draw animation
-    const firstImage = new Image();
-    firstImage.onload = firstImage.onerror = () => {
+    if (isDesktop) {
+        // Desktop: Preload first image, then trigger draw animation
+        const firstImage = new Image();
+        firstImage.onload = firstImage.onerror = () => {
+            container.classList.remove('loading');
+            container.classList.add('draw-ready');
+        };
+        firstImage.src = weddingImages[0];
+    } else {
+        // Mobile: Show immediately, no draw animation
         container.classList.remove('loading');
-        container.classList.add('draw-ready');
-    };
-    firstImage.src = weddingImages[0];
+    }
 
     // Preload rest in background
     weddingImages.slice(1).forEach(src => { new Image().src = src; });
