@@ -46,11 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
         firstImage.onload = firstImage.onerror = () => {
             container.classList.remove('loading');
             container.classList.add('draw-ready');
+
+            // Wait for handle draw animation to finish before showing images
+            const handleLine = document.getElementById('handle-line');
+            handleLine.addEventListener('animationend', () => {
+                container.classList.add('images-ready');
+            }, { once: true });
         };
         firstImage.src = weddingImages[0];
     } else {
         // Mobile: Show immediately, no draw animation
         container.classList.remove('loading');
+        container.classList.add('images-ready');
     }
 
     // Preload rest in background
