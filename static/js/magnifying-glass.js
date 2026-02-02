@@ -5,7 +5,7 @@ const MagnifyingGlass = (() => {
         cy: 155,
         r: 144,
         clipR: 138,
-        handleStart: { x: 271, y: 238 },
+        handleStart: { x: 280, y: 248 },  // Moved outside circle (was poking inside)
         handleEnd: { x: 473, y: 383 }
     });
 
@@ -67,20 +67,20 @@ const MagnifyingGlass = (() => {
 
     return {
         get currentConfig() { return currentConfig; },
-        
+
         subscribe(callback) {
             listeners.push(callback);
         },
 
         init() {
             cacheElements();
-            
+
             // Force initial application of geometry
             applyGeometry(currentConfig);
-            
+
             // Initial check (in case we start on mobile)
             checkResponsive();
-            
+
             // Listen for resize
             window.addEventListener('resize', () => {
                 // Debounce could be added here if needed
