@@ -2,13 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Cookie Consent
     CookieConsent.init();
 
-    // 2. Initialize Magnifying Glass Geometry
+    // 2. Initialize Waitlist Modal
+    WaitlistModal.init();
+
+    // 3. Initialize Magnifying Glass Geometry
     MagnifyingGlass.init();
 
-    // 3. Initialize Scroll Reveal
+    // 4. Initialize Scroll Reveal
     ScrollReveal.init();
 
-    // 4. Initialize Lens Gallery with draw animation
+    // 5. Initialize Lens Gallery with draw animation
     const weddingImages = [
         '/static/wedding_images/Gemini_Generated_Image_22hpp22hpp22hpp2.jpg',
         '/static/wedding_images/Gemini_Generated_Image_3z0s0i3z0s0i3z0s.jpg',
