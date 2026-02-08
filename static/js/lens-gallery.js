@@ -68,12 +68,14 @@ class LensGallery {
             img.setAttribute("height", imgSize);
             img.setAttribute("preserveAspectRatio", "xMidYMid slice");
 
-            // Style
+            // Style with GPU acceleration
             img.style.opacity = '0';
             img.style.animationName = 'lensFadeLoop';
             img.style.animationDuration = `${totalCycleTime}ms`;
             img.style.animationIterationCount = 'infinite';
-            img.style.animationTimingFunction = 'cubic-bezier(0.37, 0, 0.63, 1)'; // ease-in-out-sine
+            img.style.animationTimingFunction = 'cubic-bezier(0.37, 0, 0.63, 1)';
+            img.style.willChange = 'opacity';
+            img.style.transform = 'translateZ(0)'; // Force GPU acceleration
 
             // Stagger: Each image starts its cycle 'duration' ms after the previous
             const delay = index * this.options.duration;
@@ -81,6 +83,31 @@ class LensGallery {
 
             this.container.appendChild(img);
         });
+
+        // Pause animations when not visible
+        this.setupIntersectionObserver();
+    }
+
+    setupIntersectionObserver() {
+        const options = {
+            root: null,
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const images = this.container.querySelectorAll('image');
+                images.forEach(img => {
+                    if (entry.isIntersecting) {
+                        img.style.animationPlayState = 'running';
+                    } else {
+                        img.style.animationPlayState = 'paused';
+                    }
+                });
+            });
+        }, options);
+
+        observer.observe(this.container);
     }
 
     updateGeometry(newConfig) {
