@@ -3,10 +3,25 @@ from typing import Final, Union, Tuple, Dict, Set, Optional
 from pathlib import Path
 import os
 import re
+import html
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+import bleach
 
 app: Flask = Flask(__name__)
+
+# Security: Request size limit (1MB max)
+app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
+
+# Rate limiting
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://"
+)
 
 # Database connection
 DATABASE_URL: Optional[str] = os.environ.get('DATABASE_URL')
@@ -58,6 +73,7 @@ def health() -> Tuple[Dict[str, str], int]:
     return {"status": "healthy"}, 200
 
 @app.route('/api/waitlist', methods=['POST'])
+@limiter.limit("3 per minute")  # Strict rate limit for submissions
 def add_to_waitlist() -> Tuple[Dict[str, str], int]:
     """Add user to waitlist"""
     if not db_engine:
@@ -71,11 +87,15 @@ def add_to_waitlist() -> Tuple[Dict[str, str], int]:
         if not all(field in data for field in required_fields):
             return {"error": "Missing required fields"}, 400
 
-        # Extract and sanitize data
-        first_name: str = data['first_name'].strip()
-        last_name: str = data['last_name'].strip()
+        # Extract and sanitize data (XSS protection)
+        first_name: str = bleach.clean(data['first_name'].strip(), tags=[], strip=True)
+        last_name: str = bleach.clean(data['last_name'].strip(), tags=[], strip=True)
         email: str = data['email'].strip().lower()
-        reason: str = data['reason'].strip()
+        reason: str = bleach.clean(data['reason'].strip(), tags=[], strip=True)
+
+        # Additional validation: no control characters
+        if any(ord(c) < 32 for c in first_name + last_name + reason):
+            return {"error": "Invalid characters in input"}, 400
 
         # Validate field lengths
         if not (1 <= len(first_name) <= 100):
@@ -85,9 +105,13 @@ def add_to_waitlist() -> Tuple[Dict[str, str], int]:
         if not (1 <= len(reason) <= 5000):
             return {"error": "Reason must be 1-5000 characters"}, 400
 
-        # Validate email format
+        # Validate email format (prevent injection)
         email_regex: Final[str] = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(email_regex, email):
+            return {"error": "Invalid email format"}, 400
+
+        # Check for email injection attempts
+        if any(char in email for char in ['\n', '\r', '\0', '%0a', '%0d']):
             return {"error": "Invalid email format"}, 400
 
         # Insert into database
@@ -105,17 +129,20 @@ def add_to_waitlist() -> Tuple[Dict[str, str], int]:
             })
             conn.commit()
 
+        # Return success (same message regardless of duplicate)
         return {"message": "Successfully added to waitlist"}, 201
 
     except IntegrityError:
-        # Email already exists (unique constraint)
-        return {"error": "This email is already on the waitlist"}, 409
+        # Email already exists - return SAME response to prevent enumeration
+        return {"message": "Successfully added to waitlist"}, 201
     except SQLAlchemyError as e:
-        print(f"Database error: {e}")
-        return {"error": "Database error occurred"}, 500
+        # Log without exposing details to user
+        print(f"Database error: {type(e).__name__}")
+        return {"error": "Unable to process request"}, 500
     except Exception as e:
-        print(f"Unexpected error: {e}")
-        return {"error": "An unexpected error occurred"}, 500
+        # Log without exposing details to user
+        print(f"Unexpected error: {type(e).__name__}")
+        return {"error": "Unable to process request"}, 500
 
 if __name__ == '__main__':
     port: int = int(os.environ.get('PORT', 5000))
