@@ -61,8 +61,8 @@ def download_installer() -> Union[Response, Tuple[Dict[str, str], int]]:
 @app.route('/legal/<page_name>')
 def legal(page_name: str) -> str:
     """Serve legal pages"""
-    VALID_PAGES: Final[Set[str]] = {'terms', 'privacy', 'accessibility', 'impressum'}
-    
+    VALID_PAGES: Final[Set[str]] = {'terms', 'privacy', 'accessibility', 'impressum', 'ccpa-opt-out'}
+
     if page_name in VALID_PAGES:
         return render_template(f'legal/{page_name}.html')
     abort(404)
@@ -93,6 +93,10 @@ def add_to_waitlist() -> Tuple[Dict[str, str], int]:
         email: str = data['email'].strip().lower()
         reason: str = bleach.clean(data['reason'].strip(), tags=[], strip=True)
 
+        # Extract consent preferences
+        consent_required: bool = data.get('consent_required', False)
+        consent_marketing: bool = data.get('consent_marketing', False)
+
         # Additional validation: no control characters
         if any(ord(c) < 32 for c in first_name + last_name + reason):
             return {"error": "Invalid characters in input"}, 400
@@ -114,18 +118,29 @@ def add_to_waitlist() -> Tuple[Dict[str, str], int]:
         if any(char in email for char in ['\n', '\r', '\0', '%0a', '%0d']):
             return {"error": "Invalid email format"}, 400
 
+        # Validate consent (GDPR/CCPA requirement)
+        if not consent_required:
+            return {"error": "You must consent to data collection to join the waitlist"}, 400
+
+        # Get user IP for GDPR record
+        user_ip: str = request.remote_addr or request.environ.get('HTTP_X_FORWARDED_FOR', '')
+
         # Insert into database
         with db_engine.connect() as conn:
             query = text("""
-                INSERT INTO waitlist (first_name, last_name, email, reason)
-                VALUES (:first_name, :last_name, :email, :reason)
+                INSERT INTO waitlist (first_name, last_name, email, reason,
+                                     consent_marketing, consent_ip)
+                VALUES (:first_name, :last_name, :email, :reason,
+                        :consent_marketing, :consent_ip)
             """)
 
             conn.execute(query, {
                 'first_name': first_name,
                 'last_name': last_name,
                 'email': email,
-                'reason': reason
+                'reason': reason,
+                'consent_marketing': consent_marketing,
+                'consent_ip': user_ip
             })
             conn.commit()
 

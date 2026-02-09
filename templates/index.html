@@ -5,12 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kerados - Find Any Video Clip in Seconds</title>
+    <meta name="description" content="AI-powered video search tool. Index your footage and find any clip by description or face in seconds. One-time payment, 100% private, local processing.">
     <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
     <link rel="stylesheet" href="/static/css/styles.css">
-
-    <!-- Equaly AI Accessibility Widget -->
-    <!-- TODO: Replace with your actual widget ID after signup at https://equally.ai -->
-    <!-- <script src="https://widget.equally.ai/YOUR-WIDGET-ID.js" data-equally-id="YOUR-ID"></script> -->
 </head>
 
 <body>
@@ -18,17 +15,17 @@
         style="position: absolute; left: -9999px; top: 20px; z-index: 1000; background: #4f46e5; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; transition: left 0.3s;"
         onfocus="this.style.left='20px'" onblur="this.style.left='-9999px'">Skip to content</a>
     <!-- Navigation -->
-    <nav>
+    <nav role="navigation" aria-label="Main navigation">
         <div class="nav-left">
-            <div class="logo">Kerados</div>
+            <div class="logo" aria-label="Kerados logo">Kerados</div>
             <ul class="nav-links">
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works" aria-label="Learn how Kerados works">How It Works</a></li>
+                <li><a href="#features" aria-label="View Kerados features">Features</a></li>
             </ul>
         </div>
         <div class="nav-actions">
-            <button class="nav-waitlist" id="open-waitlist-btn">Join Waitlist</button>
-            <a href="/download" class="nav-cta">Get Kerados</a>
+            <button class="nav-waitlist" id="open-waitlist-btn" aria-label="Join our waitlist for early access">Join Waitlist</button>
+            <a href="/download" class="nav-cta" aria-label="Download Kerados installer">Get Kerados</a>
         </div>
     </nav>
 
@@ -205,6 +202,7 @@
                 <a href="/legal/privacy">Privacy Policy</a>
                 <a href="/legal/accessibility">Accessibility</a>
                 <a href="/legal/impressum">Impressum</a>
+                <a href="/legal/ccpa-opt-out"><strong>Do Not Sell My Personal Information</strong></a>
             </div>
             <div class="footer-section">
                 <h4>About</h4>
@@ -246,6 +244,26 @@
                     <label for="reason">Why do you want Kerados?</label>
                     <textarea id="reason" name="reason" rows="4" required aria-required="true"
                         placeholder="Tell us about your video editing workflow and how Kerados would help..."></textarea>
+                </div>
+
+                <!-- Notice at Collection -->
+                <div class="form-notice">
+                    <p><strong>Privacy Notice:</strong> We collect your name and email to notify you when Kerados launches. We will not sell your information. See our <a href="/legal/privacy" target="_blank">Privacy Policy</a> for details.</p>
+                </div>
+
+                <!-- Consent Checkboxes -->
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="consent-required" name="consent_required" required aria-required="true">
+                        <span>I consent to Kerados storing my information for waitlist notifications. I can withdraw consent at any time by emailing privacy@kerados.com. <strong>(Required)</strong></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="consent-marketing" name="consent_marketing">
+                        <span>I consent to receiving product updates and marketing emails. <em>(Optional)</em></span>
+                    </label>
                 </div>
 
                 <div class="form-status" id="form-status" role="alert" aria-live="polite"></div>

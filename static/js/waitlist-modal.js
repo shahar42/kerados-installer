@@ -88,7 +88,9 @@ const WaitlistModal = (() => {
             first_name: form.elements['first_name'].value.trim(),
             last_name: form.elements['last_name'].value.trim(),
             email: form.elements['email'].value.trim(),
-            reason: form.elements['reason'].value.trim()
+            reason: form.elements['reason'].value.trim(),
+            consent_required: form.elements['consent_required'].checked,
+            consent_marketing: form.elements['consent_marketing'].checked
         };
 
         try {
